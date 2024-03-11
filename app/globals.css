@@ -1,0 +1,193 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+p {
+  color: black;
+  font-size: 1rem;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  align-items: center;
+}
+
+header {
+  flex: 1.5;
+  flex-direction: row;
+  background-color: #FFF900;
+  width: 100%;
+  padding-left: 5%;
+  padding-right: 5%;
+  border-bottom-width: 0.5px;
+  border-bottom-color: black;
+  display: flex;
+  overflow: hidden;
+}
+
+header img {
+  width: 8rem;
+  height: 8rem;
+  align-self: center;
+  position: relative;
+  left: 5%;
+  z-index: 1;
+  border-radius: 5rem;
+  opacity: 0.2;
+}
+
+main {
+  width: 100%;
+  flex: 5;
+  display: flex;
+  justify-content: center;
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-top: 2rem;
+}
+
+main article {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+}
+
+main article section {
+  padding: 1%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+footer {
+  flex: 1;
+  background-color: #FFF900;
+  width: 100%;
+  padding-left: 5%;
+  padding-right: 5%;
+  border-top-width: 0.5px;
+  border-top-color: black;
+}
+
+h1 {
+  color: blue;
+  font-size: 4rem;
+  font-weight: bold;
+  -webkit-text-stroke: 0.05px white;
+  display: inline-block;
+  flex: 3;
+  text-align: center;
+  align-self: center;
+  z-index: 2;
+}
+
+h2 {
+  font-size: 3rem;
+}
+
+h3 {
+  font-size: 2rem;
+}
+
+p {
+  font-size: 1rem;
+}
+
+nav {
+  display: flex;
+  flex: 5;
+  align-self: center;
+  justify-content: space-around;
+}
+
+button {
+  background-color: blue;
+  color: white;
+  padding: 0.33rem 1rem;
+  border-radius: 1rem;
+  margin: 1rem;
+  width: fit-content;
+}
+
+button:hover {
+  background-color: rgb(91, 91, 227);
+}
+
+h2 {
+  color: black;
+  font-size: 2rem;
+  text-decoration: underline 0.5px;
+  display: block;
+}
+
+/* set the default dark styles here */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* --foreground-rgb: 255, 255, 255; */
+    --foreground-rgb:#FFF900;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+
+  header {
+    background-color: rgb(11, 11, 40);
+    border-bottom-color: #FFF900;
+  }
+
+  footer {
+    background-color:  rgb(11, 11, 40);
+    border-top-color: #FFF900;
+  }
+
+  main {
+    background-color:  rgb(11, 11, 40);
+  }
+
+  h1 {
+    color: blue;
+    -webkit-text-stroke: 0.05px #FFF900;
+  }
+
+  h2 {
+    color: #FFF900;
+  }
+  
+  h3 {
+    color:#FFF900;
+  }
+
+  nav button {
+    color:#FFF900;
+  }
+
+  p {
+    color: #FFF900;
+  }
+
+  header img {
+    -webkit-filter: grayscale(50%);
+    filter: grayscale(50%);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
