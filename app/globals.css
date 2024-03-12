@@ -28,7 +28,7 @@ body {
 }
 
 header {
-  flex: 1.5;
+  flex: 1;
   flex-direction: row;
   background-color: #FFF900;
   width: 100%;
@@ -45,7 +45,7 @@ header img {
   height: 8rem;
   align-self: center;
   position: relative;
-  left: 5%;
+  left: 2%;
   z-index: 1;
   border-radius: 5rem;
   opacity: 0.2;
@@ -59,6 +59,7 @@ main {
   padding-left: 5%;
   padding-right: 5%;
   padding-top: 2rem;
+  overflow-y: auto;
 }
 
 main article {
@@ -76,13 +77,34 @@ main article section {
 }
 
 footer {
-  flex: 1;
+  flex: 0.5;
   background-color: #FFF900;
   width: 100%;
   padding-left: 5%;
   padding-right: 5%;
   border-top-width: 0.5px;
   border-top-color: black;
+  box-shadow: 0 30px 40px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+}
+
+footer nav {
+  flex: 1;
+  justify-content: center;
+}
+
+footer nav .footer-link {
+  margin: 2%;
+}
+
+/* this is the only time we use this */
+.header-link {
+  align-self: center;
+}
+
+.header-link:hover h1 {
+  color:  rgb(91, 91, 227);;
 }
 
 h1 {
@@ -116,7 +138,7 @@ nav {
   justify-content: space-around;
 }
 
-button {
+.link {
   background-color: blue;
   color: white;
   padding: 0.33rem 1rem;
@@ -125,7 +147,7 @@ button {
   width: fit-content;
 }
 
-button:hover {
+.link:hover {
   background-color: rgb(91, 91, 227);
 }
 
@@ -155,6 +177,10 @@ h2 {
     border-top-color: #FFF900;
   }
 
+  footer nav .footer-link {
+    color: white;
+  }
+
   main {
     background-color:  rgb(11, 11, 40);
   }
@@ -172,7 +198,7 @@ h2 {
     color:#FFF900;
   }
 
-  nav button {
+  nav .link {
     color:#FFF900;
   }
 
