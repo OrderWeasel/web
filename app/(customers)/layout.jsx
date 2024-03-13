@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import NavButton from '../ui/navButton';
 
+// I would like to gray out the Back to restaurants button if the current page is /restaurants
+
 export default function CustomersLayout({ children }) {
   return (
     <>
@@ -10,6 +12,7 @@ export default function CustomersLayout({ children }) {
           <h1>OrderWeasel</h1>
         </Link>
         <nav>
+          <NavButton type="restaurants" href="/restaurants" />;
           <NavButton type="cart" href="/restaurants/restaurant/cart"/>
         </nav>
       </header>

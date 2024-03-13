@@ -6,7 +6,9 @@ let messages = {
   login: "Log In",
   home: "Home",
   cart: "Cart",
-  signup: "Sign Up"
+  signup: "Sign Up",
+  merchantHome: "Merchant Home",
+  restaurants: 'Back to Restaurants',
 }
 
 function getMessage(type) {
@@ -30,6 +32,12 @@ function getMessage(type) {
       break;
     case('signup'):
       message = messages.signup;
+      break;
+    case('merchantHome'):
+      message = messages.merchantHome;
+      break;
+    case('restaurants'):
+      message = messages.restaurants;
       break;
     default:
       let _exhaustiveCheck = type;
