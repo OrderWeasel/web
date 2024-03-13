@@ -138,6 +138,10 @@ nav {
   justify-content: space-around;
 }
 
+header nav {
+  justify-content: right;
+}
+
 .link {
   background-color: blue;
   color: white;

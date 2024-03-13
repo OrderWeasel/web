@@ -4,10 +4,12 @@
 import Image from "next/image";
 import BULLET_POINT from './ui/bulletPoint';
 import NavButton from "./ui/navButton";
+import HomeHeader from './ui/homeHeader';
 
 export default function Home() {
   return (
     <>
+      <HomeHeader />
       <main>
         <article>
           <h2>How it Works</h2>
@@ -16,7 +18,7 @@ export default function Home() {
             <p>
               {BULLET_POINT} Customers, select from any one of our participating merchants. Simply place your order and pay upon arrival
             </p>
-            <NavButton type={'customer'} href={'/customer'}/>
+            <NavButton type={'customer'} href={'/restaurants'}/>
           </section>
           <section>
             <h3>Merchants</h3>
