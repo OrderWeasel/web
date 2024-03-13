@@ -2,7 +2,7 @@
 // import styles from '@/app/ui/Home.module.css';
 // import { headers } from 'next/headers';
 import Image from "next/image";
-import BULLET_POINT from './ui/bulletPoint';
+import BULLET_POINT from './lib/utils/bulletPoint';
 import NavButton from "./ui/navButton";
 import HomeHeader from './ui/homeHeader';
 
