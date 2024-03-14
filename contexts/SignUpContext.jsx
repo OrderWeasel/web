@@ -33,7 +33,7 @@ const SignUpProvider = props => {
   const [newMerchant, setNewMerchant] = useState(defaultNewMerchant);
 
   useEffect(() => {
-    //           console.log(newMerchant);
+    console.log(JSON.stringify(newMerchant) + " (at SignUpContext)");
   }, [newMerchant]);
 
   useEffect(() => {}, [validName, validPhone]);

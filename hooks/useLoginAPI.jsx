@@ -2,8 +2,8 @@
 import React, {useContext} from 'react';
 import {LoginContext} from '../contexts/LoginContext';
 
-// import useMerchant from './useMerchant';
-import useSessions from './useSessions';
+import useMerchantAPI from './useMerchantAPI';
+import useSession from './useSession';
 
 const loginURL = process.env.HOST_URL + '/api/login/';
 const logoutURL = process.env.HOST_URL + '/api/logout/';
@@ -20,8 +20,8 @@ const useLoginAPI = () => {
     setCurrentMerchant,
   } = useContext(LoginContext);
 
-  // const {merchants} = useMerchant();
-  const {createNewSession, encodeSessionId} = useSessions();
+  const {merchants} = useMerchantAPI();
+  const {createNewSession, encodeSessionId} = useSession();
 
   // API methods
   async function logoutAPI(merchantId) {

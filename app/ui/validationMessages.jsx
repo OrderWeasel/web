@@ -12,7 +12,7 @@ function InvalidNameMessage({validName}) {
 function InvalidPhoneMessage({validPhone}) {
   return (
     <p className={ validPhone ? 'success' : 'error'}>
-      {BULLET_POINT} Phone number is required and must contain 10 digits
+      {BULLET_POINT} Phone number is required and must contain 10 digits eg (555-555-5555)
     </p>
   );
 }
@@ -38,7 +38,7 @@ function InvalidCityMessage({validCity}) {
 function InvalidStateMessage({validState}) {
   return (
     <p className={ validState ? 'success' : 'error'}>
-      {BULLET_POINT} Full state name or state code is required
+      {BULLET_POINT} Select state
     </p>
   );
 }

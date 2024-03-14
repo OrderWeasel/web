@@ -76,6 +76,11 @@ main article section {
   justify-content: space-around;
 }
 
+section.welcome {
+  justify-content: space-around;
+  margin-bottom: 2rem;
+}
+
 footer {
   flex: 0.5;
   background-color: #FFF900;
@@ -121,10 +126,12 @@ h1 {
 
 h2 {
   font-size: 3rem;
+  color: black;
+  display: block;
 }
 
 h3 {
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 p {
@@ -153,13 +160,6 @@ header nav {
 
 .link:hover {
   background-color: rgb(91, 91, 227);
-}
-
-h2 {
-  color: black;
-  font-size: 2rem;
-  /* text-decoration: underline 0.5px; */
-  display: block;
 }
 
 input, select {
@@ -210,16 +210,12 @@ p.success {
     -webkit-text-stroke: 0.05px #FFF900;
   }
 
-  h2 {
+  h2, h3 {
     color: #FFF900;
-  }
-  
-  h3 {
-    color:#FFF900;
   }
 
   p {
-    color: #FFF900;
+    color: white;
   }
 
   header img {

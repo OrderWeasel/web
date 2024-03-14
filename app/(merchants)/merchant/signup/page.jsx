@@ -24,6 +24,7 @@ import {
   InvalidPasswordMessage,
   InvalidValidatorMessage,
 } from '../../../ui/validationMessages';
+import Restaurant from "../../../(customers)/restaurants/restaurant/page";
 
 export default function SignUp(){
   const {
@@ -35,6 +36,17 @@ export default function SignUp(){
     setValidEmail, validPassword, setValidPassword, 
     validValidator, setValidValidator, isAllValid
   } = useSignUpAPI();
+
+  let handleStandardInput = (e, isValid, setField) => {
+    let text = e.target.value;
+    if (isValid(text)) {
+      setField(true);
+    } else {
+      setField(false);
+    }
+
+    updateNewMerchant(e.target.name, text);
+  };
 
   return (
     <main className="flex flex-col pt-[1rem]">
@@ -62,11 +74,15 @@ export default function SignUp(){
                   <div className="mt-2">
                     <input
                       type="text"
-                      name="restaurant-name"
+                      name="restaurantName"
+                      value={newMerchant["restaurantName"]}
                       id="restaurant-name"
                       autoComplete="organization"
                       className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       maxLength={225}
+                      onChange={(e) => {
+                        handleStandardInput(e, isValidRestaurantName, setValidName);
+                      }}
                       />
                   </div>
                 </div>
@@ -79,7 +95,7 @@ export default function SignUp(){
                     <input
                       type="tel"
                       name="tel1"
-                      id="phone"
+                      id="phone1"
                       autoComplete="tel"
                       className="flex-1 mr-[1rem] w-12 rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       maxLength={3}
@@ -88,7 +104,7 @@ export default function SignUp(){
                     <input
                       type="tel"
                       name="tel2"
-                      id="phone"
+                      id="phone2"
                       autoComplete="tel"
                       className="flex-2 mr-[1rem] w-12 rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       maxLength={3}
@@ -97,7 +113,7 @@ export default function SignUp(){
                     <input
                       type="tel"
                       name="tel3"
-                      id="phone"
+                      id="phone3"
                       autoComplete="tel"
                       className="flex-3 mr-[1rem] w-14 rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       maxLength={4}
@@ -112,11 +128,16 @@ export default function SignUp(){
                   <div className="mt-2">
                     <input
                       type="text"
-                      name="street-address"
+                      name="street"
+                      value={newMerchant["street"]}
                       id="street-address"
                       autoComplete="street-address"
                       className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
+                      maxLength={225}
+                      onChange={(e) => {
+                        handleStandardInput(e, isValidStreet, setValidStreet);
+                      }}
+                    />
                   </div>
                 </div>
 
@@ -128,10 +149,15 @@ export default function SignUp(){
                     <input
                       type="text"
                       name="city"
+                      value={newMerchant["city"]}
                       id="city"
                       autoComplete="address-level2"
                       className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
+                      maxLength={225}
+                      onChange={(e) => {
+                        handleStandardInput(e, isValidCity, setValidCity);
+                      }}
+                    />
                   </div>
                 </div>
 
@@ -158,17 +184,22 @@ export default function SignUp(){
                 </div>
 
                 <div className="sm:col-span-2">
-                  <label htmlFor="postal-code" className="block text-sm font-medium leading-6">
+                  <label htmlFor="zip-code" className="block text-sm font-medium leading-6">
                     ZIP / Postal code
                   </label>
                   <div className="mt-2">
                     <input
                       type="text"
-                      name="postal-code"
-                      id="postal-code"
+                      name="zip"
+                      value={newMerchant["zip"]}
+                      id="zip-code"
                       autoComplete="postal-code"
                       className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 bg-grey"
-                      />
+                      maxLength={5}
+                      onChange={(e) => {
+                        handleStandardInput(e, isValidZip, setValidZip);
+                      }}
+                    />
                   </div>
                 </div>
 
@@ -180,10 +211,12 @@ export default function SignUp(){
                     <input
                       id="email"
                       name="email"
+                      value={newMerchant["email"]}
                       type="email"
                       autoComplete="email"
                       className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
+                      maxLength={225}
+                    />
                   </div>
                 </div>
 
@@ -195,10 +228,12 @@ export default function SignUp(){
                     <input
                       id="password"
                       name="password"
+                      value={newMerchant["password"]}
                       type="password"
                       autoComplete="password"
                       className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
+                      maxLength={225}
+                    />
                   </div>
                 </div>
 
@@ -210,10 +245,12 @@ export default function SignUp(){
                     <input
                       id="validator"
                       name="validator"
+                      value={newMerchant["validator"]}
                       type="password"
                       autoComplete="off"
                       className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
+                      maxLength={225}
+                    />
                   </div>
                 </div>
 
