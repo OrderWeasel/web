@@ -108,7 +108,7 @@ footer nav .footer-link {
 }
 
 h1 {
-  color: blue;
+  color:  rgb(28, 28, 206);
   font-size: 4rem;
   font-weight: bold;
   -webkit-text-stroke: 0.05px white;
@@ -143,7 +143,7 @@ header nav {
 }
 
 .link {
-  background-color: blue;
+  background-color: rgb(28, 28, 206);
   color: white;
   padding: 0.33rem 1rem;
   border-radius: 1rem;
@@ -171,6 +171,14 @@ form {
   border-radius: 2rem;
 }
 
+p.error {
+  color: rgb(255, 0, 0);
+}
+
+p.success {
+  color: rgb(9, 133, 9);
+}
+
 /* set the default dark styles here */
 @media (prefers-color-scheme: dark) {
   :root {
@@ -195,11 +203,10 @@ form {
   }
 
   main {
-    background-color:  rgb(11, 11, 40);
+    background-color:  rgb(27, 27, 43);
   }
 
   h1 {
-    color: blue;
     -webkit-text-stroke: 0.05px #FFF900;
   }
 
@@ -208,10 +215,6 @@ form {
   }
   
   h3 {
-    color:#FFF900;
-  }
-
-  nav .link {
     color:#FFF900;
   }
 
@@ -235,6 +238,10 @@ form {
 
   form {
     background-color: gray;
+  }
+  
+  p.error {
+    color: rgb(207, 49, 49);
   }
 }
 

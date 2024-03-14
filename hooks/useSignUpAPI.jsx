@@ -1,16 +1,15 @@
 "use client";
 import {useContext} from 'react';
 import {SignUpContext} from '../contexts/SignUpContext';
-// import useSessions from './useSessions';
-// import {HOST_URL} from '@env';
+import useSession from './useSession';
 
-// import {getStateCode, formatPhone} from '../utils/validationUtils';
+import {getStateCode, formatPhone} from '../app/lib/utils/signUpValidations';
 
 const HOST_URL = process.env.HOST_URL;
 
 const signUpURL = HOST_URL + '/api/signup/';
 
-const useSignUp = () => {
+const useSignUpAPI = () => {
   const {
     newMerchant, setNewMerchant,
     validName, setValidName, validPhone, setValidPhone,
@@ -20,7 +19,7 @@ const useSignUp = () => {
     validValidator, setValidValidator
   } = useContext(SignUpContext);
 
-  // const {createNewSession} = useSessions();
+  const {createNewSession} = useSession();
 
   // API methods
   async function signUp() {
@@ -131,4 +130,4 @@ const useSignUp = () => {
   };
 };
 
-export default useSignUp;
+export default useSignUpAPI;
