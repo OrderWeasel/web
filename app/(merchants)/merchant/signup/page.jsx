@@ -24,7 +24,6 @@ import {
   InvalidPasswordMessage,
   InvalidValidatorMessage,
 } from '../../../ui/validationMessages';
-import Restaurant from "../../../(customers)/restaurants/restaurant/page";
 
 export default function SignUp(){
   const {

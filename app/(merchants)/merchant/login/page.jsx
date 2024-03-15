@@ -1,6 +1,7 @@
 "use client";
 import useLoginAPI from '../../../../hooks/useLoginAPI';
 import useMerchantAPI from '../../../../hooks/useMerchantAPI';
+import NavButton from '../../../ui/navButton';
 
 export default function Login(){
   const {credentials, updateCredentials} = useLoginAPI();
@@ -47,30 +48,14 @@ export default function Login(){
               </div>
             </div>
             <div className="flex mt-[1rem] justify-end">
-              <button className="bg-white text-black hover:bg-indigo-300 hover:text-black px-[1rem] py-[0.5rem] rounded-[1.5rem] justify-self-end shadow-md">
+              <button 
+                className="bg-white text-black hover:bg-indigo-300 hover:text-black px-[1rem] py-[0.5rem] rounded-[1.5rem] justify-self-end shadow-md"
+              >
                 Log In
               </button>
             </div>
           </form>
-
       </section>
     </main>
   );
 }
-
-// <View style={merchContCSS.mainContent}>
-// <TextInput
-//   style={merchContCSS.input}
-//   value={credentials[email]}
-//   onChangeText={text => {
-//     updateCredentials(email, text);
-//   }}
-//   />
-// <TextInput
-//   style={merchContCSS.input}
-//   value={credentials[password]}
-//   onChangeText={text => {
-//     updateCredentials(password, text);
-//   }}
-//   />
-// </View>

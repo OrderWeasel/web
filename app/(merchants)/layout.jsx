@@ -9,9 +9,9 @@ export default function MerchantsLayout({ children }) {
   return (
     <>
       <header>
-        <img src="/order_weasel.jpg" alt="The order weasel" />
+        <Image src="/order_weasel.jpg" alt="The order weasel" width={100} height={100}/>
         <Link className="header-link" href="/">
-          <h1>OrderWeasel</h1>
+          <h1 className="lg:text-[5rem] md:text-[3rem]">OrderWeasel</h1>
         </Link>
         <nav>
           <NavButton type="merchantHome" href="/merchant"/>

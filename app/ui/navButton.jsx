@@ -5,8 +5,8 @@ let messages = {
   customer: "Find a Place to Eat",
   login: "Log In",
   home: "Home",
-  cart: "Cart",
   signup: "Sign Up",
+  signOut: "Sign Out",
   merchantHome: "Merchant Home",
   restaurants: 'Back to Restaurants',
 }
@@ -27,9 +27,6 @@ function getMessage(type) {
     case('home'):
       message = messages.home;
       break;
-    case('cart'):
-      message = messages.cart;
-      break;
     case('signup'):
       message = messages.signup;
       break;
@@ -38,6 +35,9 @@ function getMessage(type) {
       break;
     case('restaurants'):
       message = messages.restaurants;
+      break;
+    case("signOut"):
+      message = messages.signOut;
       break;
     default:
       let _exhaustiveCheck = type;

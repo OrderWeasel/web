@@ -56,8 +56,8 @@ main {
   flex: 5;
   display: flex;
   justify-content: center;
-  padding-left: 5%;
-  padding-right: 5%;
+  padding-left: 8%;
+  padding-right: 8%;
   padding-top: 2rem;
   overflow-y: auto;
 }
@@ -109,7 +109,7 @@ footer nav .footer-link {
 }
 
 .header-link:hover h1 {
-  color:  rgb(91, 91, 227);;
+  color:  rgb(91, 91, 227);
 }
 
 h1 {
@@ -149,7 +149,7 @@ header nav {
   justify-content: right;
 }
 
-.link {
+nav button, .link {
   background-color: rgb(28, 28, 206);
   color: white;
   padding: 0.33rem 1rem;
@@ -157,6 +157,26 @@ header nav {
   margin: 1rem;
   width: fit-content;
 }
+
+.toggle-button {
+  color: white;
+  padding: 0.33rem 1rem;
+  border-radius: 1rem;
+  margin: 1rem;
+  width: fit-content;
+}
+
+.toggle-button:hover {
+  background-color: rgb(91, 91, 227);
+}
+
+.active-orders {
+  background-color: rgb(255, 0, 0);
+}
+
+.suspended-orders {
+  background-color: rgb(9, 133, 9);
+} 
 
 .link:hover {
   background-color: rgb(91, 91, 227);
@@ -179,6 +199,50 @@ p.success {
   color: rgb(9, 133, 9);
 }
 
+dialog {
+  display: none;
+}
+
+dialog.visible {
+  display: block;
+}
+
+.all-reset {
+  all: unset;
+}
+
+.item:hover {
+  background-color: rgb(91, 91, 227);
+  cursor: pointer;
+}
+
+.profile-icon {
+  color: black;
+  width: 2rem;
+  height: 2rem;
+}
+
+.profile-icon:hover {
+  cursor: pointer;
+  background-color: rgb(91, 91, 227);
+  border-radius: 3rem;
+}
+
+.profile-link {
+  display: flex;
+  align-items: center;
+}
+
+.panel {
+  overflow-y: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.panel:not(:last-child) {
+  border-right: 1px solid blue;
+}
+
 /* set the default dark styles here */
 @media (prefers-color-scheme: dark) {
   :root {
@@ -186,6 +250,10 @@ p.success {
     --foreground-rgb:#FFF900;
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
+  }
+
+  .profile-icon {
+    color: white;
   }
 
   header {
@@ -238,6 +306,19 @@ p.success {
   
   p.error {
     color: rgb(207, 49, 49);
+  }
+
+  .active-orders {
+    background-color: rgb(207, 49, 49);;
+  }
+
+  ::-webkit-scrollbar {
+    background-color: rgb(73, 73, 73);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgb(91, 91, 227);
+    border-radius: 10px;
   }
 }
 

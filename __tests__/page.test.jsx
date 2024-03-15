@@ -5,19 +5,19 @@ import '@testing-library/jest-dom'
 import Home from '../app/page'
 
 // customer pages
-import Customer from '../app/(customers)/restaurants/page';
-import Checkout from '../app/(customers)/restaurants/checkout/page';
+import Restaurants from '../app/(customers)/restaurants/page';
 import Restaurant from '../app/(customers)/restaurants/restaurant/page';
-import Cart from '../app/(customers)/restaurants/restaurant/cart/page';
-import Menu from '../app/(customers)/restaurants/restaurant/menu/page';
+import Checkout from '../app/(customers)/restaurants/checkout/page';
  
 // merchant pages
 import Merchant from '../app/(merchants)/merchant/page';
 import Login from '../app/(merchants)/merchant/login/page';
 import Signup from '../app/(merchants)/merchant/signup/page';
-import Orders from '../app/(merchants)/merchant/login/orders/page';
-import Profile from '../app/(merchants)/merchant/login/profile/page';
 import Oauth from '../app/(merchants)/merchant/signup/oauth/page';
+
+// authorized merchant pages
+import Profile from '../app/(authorized-merchant)/profile/page';
+import Orders from '../app/(authorized-merchant)/orders/page';
 
 describe('Home', () => {
   it('should execute without error', () => {
@@ -25,15 +25,9 @@ describe('Home', () => {
   });
 });
 
-describe('Customer', () => {
+describe('Restaurants', () => {
   it('should execute without error', () => {
-    <Customer />
-  });
-});
-
-describe('Checkout', () => {
-  it('should execute without error', () => {
-    <Checkout />
+    <Restaurants />
   });
 });
 
@@ -43,15 +37,9 @@ describe('Restaurant', () => {
   });
 });
 
-describe('Cart', () => {
+describe('Checkout', () => {
   it('should execute without error', () => {
-    <Cart />
-  });
-});
-
-describe('Menu', () => {
-  it('should execute without error', () => {
-    <Menu />
+    <Checkout />
   });
 });
 
