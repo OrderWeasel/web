@@ -3,7 +3,9 @@
 export default function Confirmation(){
   return (
     <main>
-      <p>Fuck You Confirmation</p>
+      <section>
+        <h1>Order Confirmation</h1>
+      </section>
     </main>
   );
 }
