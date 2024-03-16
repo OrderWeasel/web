@@ -1,6 +1,8 @@
 "use client";
 import useSignUpAPI from "../../../../hooks/useSignUpAPI";
 import {STATES} from "../../../lib/utils/statesList";
+import { handleStandardInput } from "../../../lib/utils/handlers";
+
 import {
   isValidPhoneNumber,
   isValidRestaurantName,
@@ -35,17 +37,6 @@ export default function SignUp(){
     setValidEmail, validPassword, setValidPassword, 
     validValidator, setValidValidator, isAllValid
   } = useSignUpAPI();
-
-  let handleStandardInput = (e, isValid, setField) => {
-    let text = e.target.value;
-    if (isValid(text)) {
-      setField(true);
-    } else {
-      setField(false);
-    }
-
-    updateNewMerchant(e.target.name, text);
-  };
 
   return (
     <main className="flex flex-col pt-[1rem]">

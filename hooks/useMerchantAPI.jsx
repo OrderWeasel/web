@@ -5,7 +5,7 @@ import useSessions from './useSession';
 
 const merchantsURL = process.env.HOST_URL + '/api/merchants/';
 
-const useMerchant = () => {
+const useMerchantAPI = () => {
   const {
     merchants,
     setMerchants,
@@ -267,4 +267,4 @@ const useMerchant = () => {
   };
 };
 
-export default useMerchant;
+export default useMerchantAPI;
