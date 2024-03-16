@@ -56,7 +56,7 @@ function StoreInformation() {
   ]);
   useEffect(() => {
     fillStoreInfo(currentMerchant);
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div>
@@ -233,7 +233,7 @@ function LoginInformation() {
   useEffect(() => {}, [validEmail, validPassword]);
   useEffect(() => {
     fillLoginInfo(currentMerchant);
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div>

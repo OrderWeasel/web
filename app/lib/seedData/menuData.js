@@ -1,4 +1,4 @@
-export default {
+const menuData = {
   1: [
     {
       title: 'Pancakes',
@@ -243,3 +243,5 @@ export default {
   5: [],
   6: [],
 };
+
+export default menuData;

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities*/
 import React from 'react';
 import BULLET_POINT from '../lib/utils/bulletPoint';
 

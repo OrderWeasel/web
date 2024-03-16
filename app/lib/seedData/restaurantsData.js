@@ -1,4 +1,4 @@
-export default [
+const restaurantsData = [
   {
     id: 1,
     title: 'The Red Pickle',
@@ -48,3 +48,5 @@ export default [
     address: '3333 Woodmen Ave, City, State, 74001',
   },
 ];
+
+export default restaurantsData;

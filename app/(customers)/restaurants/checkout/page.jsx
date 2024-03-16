@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities*/
 "use client";
 import React, {useState, useContext, createContext} from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -32,7 +33,7 @@ function CheckoutHeader({title, address}) {
   return (
     <section className='flex-1'> 
       <div className='flex flex-row'>
-        <Image src="/order_weasel.jpg" className='rounded' width={100} height={100} />
+        <Image src="/order_weasel.jpg" className='rounded' width={100} height={100} alt="Restaurant logo" />
         <h2 className='self-center ml-4'>{title}</h2>
       </div>
       <div className='mt-4'>
@@ -157,7 +158,7 @@ function NotificationsSection() {
       <h2>Text & Email Notifications</h2>
       <div className='p-4'>
         <p>{BULLET_POINT} Feature not currently available.</p>
-        <p> {BULLET_POINT} We'll send you a notification when your order is ready👍 </p>
+        <p> {BULLET_POINT} We&aposll send you a notification when your order is ready👍 </p>
       </div>
     </section>
   );

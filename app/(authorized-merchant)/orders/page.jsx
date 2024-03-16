@@ -2,8 +2,7 @@
 import React, {useState, useEffect} from 'react';
 
 import useOrders from '../../../hooks/useOrders';
-import OrderItemModal from '../../ui/orderItemModal';
-
+import OrderItemModal from '../../ui/orderItemModal'
 function OrderItem({item}) {
   const [modalVisible, setModalVisible] = useState(false);
   let id = item.id;
@@ -93,9 +92,10 @@ function Status() {
 
 export default function Orders(){
   const {getOrders, takingOrders} = useOrders();
+
   useEffect(() => {
     getOrders();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <main className='p-0 flex flex-col overflow-clip justify-start'>

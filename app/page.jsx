@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities*/
 "use client";
 // import styles from '@/app/ui/Home.module.css';
 // import { headers } from 'next/headers';

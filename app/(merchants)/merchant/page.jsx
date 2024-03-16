@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities*/
 "use client";
 import BULLET_POINT from "../../lib/utils/bulletPoint";
 import NavButton from "../../ui/navButton";

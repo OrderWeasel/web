@@ -1,4 +1,4 @@
-export default [
+const orderData = [
   {
     id: 1,
     order_id: '111',
@@ -165,3 +165,5 @@ export default [
     ],
   },
 ];
+
+export default orderData;
