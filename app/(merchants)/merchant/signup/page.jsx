@@ -255,7 +255,7 @@ export default function SignUp(){
                 </button> :
                 <button 
                   className="bg-slate-500 text-slate-700 shadow-sm ring-2 ring-inset ring-gray-500 px-[1rem] py-[0.5rem] rounded-[1.5rem] justify-self-end shadow-sm" 
-                  onClick={() => { alert('Fix errors before submission')}}  
+                  onClick={() => { alert('Please ensure all fields are valid before submission')}}  
                 >
                   Submit
                 </button>

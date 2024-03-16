@@ -5,7 +5,7 @@ export default [
     category: 'American',
     distance: 5.2,
     rating: 5,
-    address: '1234 Main St, City, State, 80080',
+    address: '118 Deer Path Ave, Manitou Springs, CO, 80829',
   },
   {
     id: 2,

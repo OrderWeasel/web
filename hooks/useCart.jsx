@@ -2,6 +2,11 @@
 import {useContext} from 'react';
 import {CartContext} from '../contexts/CartContext';
 import useLocalStorage from './useLocalStorage';
+import getCopy from '../app/lib/utils/getCopy';
+
+// hardcoded tax rate for Seattle
+// should be able to get tax rates dynamically based on location 
+import { SEATTLE_SALES_TAX_RATE } from '../app/lib/utils/taxRates';
 
 // import useResData from '../hooks/useResData';
 
@@ -11,16 +16,6 @@ const useCart = () => {
   const {updateCart} = useLocalStorage();
   // const {resId, menu} = useResData();
 
-  function findIndex(arr, id) {
-    return arr.findIndex(item => item.id === id);
-  }
-
-  function flattenMenu(menuCopy) {
-    let flatter = menuCopy.map(section => section.data);
-    return flatter.flat();
-  }
-
-  //   function addItem(id) {
   function addItem(id, quantity) {
     if (quantity === '0') {
       return;
@@ -67,22 +62,48 @@ const useCart = () => {
     setCart(cartCopy);
   }
 
-  function getCopy(collection) {
-    return JSON.parse(JSON.stringify(collection));
-  }
+  // function cartTotal() {
+  //   let total = 0;
 
-  function cartTotal() {
-    let total = 0;
+  //   cart.forEach(item => {
+  //     let cost = Number(item.cost);
+  //     let quantity = Number(item.quantity);
 
+  //     total += cost * quantity;
+  //   });
+
+  //   return total.toFixed(2);
+  // }
+
+  function calculateTaxAndTotals(cart) {
+    let subtotal = 0;
+    let tax;
+    let total;
+  
     cart.forEach(item => {
-      let cost = Number(item.cost);
       let quantity = Number(item.quantity);
-
-      total += cost * quantity;
+      let cost = Number(item.cost);
+  
+      subtotal += quantity * cost;
     });
+  
+    tax = subtotal * SEATTLE_SALES_TAX_RATE;
+    total = subtotal + tax;
+  
+    return {subtotal, tax, total};
+  };
 
-    return total.toFixed(2);
+  // helpers
+
+  function findIndex(arr, id) {
+    return arr.findIndex(item => item.id === id);
   }
+
+  function flattenMenu(menuCopy) {
+    let flatter = menuCopy.map(section => section.data);
+    return flatter.flat();
+  }
+
 
   return {
     cart,
@@ -91,8 +112,8 @@ const useCart = () => {
     editItem,
     addItem,
     findIndex,
-    getCopy,
-    cartTotal,
+    // cartTotal,
+    calculateTaxAndTotals
   };
 };
 

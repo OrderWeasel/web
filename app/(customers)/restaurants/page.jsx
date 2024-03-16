@@ -17,7 +17,9 @@ function RestaurantItem({
     <Link 
       href={{
         pathname: '/restaurants/restaurant', 
-        query:{merchantId: id}
+        query:{
+          merchantId: id
+        }
       }}
       className="bg-gray-500 mb-4 flex flex-row p-2 rounded"
       info={{         

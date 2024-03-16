@@ -2,6 +2,7 @@
 import {useContext} from 'react';
 import {OrdersContext} from '../contexts/OrdersContext';
 import orderData from '../app/lib/seedData/orderData';
+import getCopy from '../app/lib/utils/getCopy';
 
 const useOrders = () => {
   const {
@@ -12,10 +13,6 @@ const useOrders = () => {
     statuses,
     setStatuses,
   } = useContext(OrdersContext);
-
-  function getCopy(collection) {
-    return JSON.parse(JSON.stringify(collection));
-  }
 
   // orders should be loaded from the database
   // orders are fetched on get

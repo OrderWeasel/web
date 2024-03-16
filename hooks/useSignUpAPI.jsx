@@ -2,6 +2,7 @@
 import {useContext} from 'react';
 import {SignUpContext} from '../contexts/SignUpContext';
 import useSession from './useSession';
+import getCopy from '../app/lib/utils/getCopy';
 
 import {getStateCode, formatPhone} from '../app/lib/utils/signUpValidations';
 
@@ -64,10 +65,6 @@ const useSignUpAPI = () => {
   }
 
   // Helper functions
-
-  function getCopy(collection) {
-    return JSON.parse(JSON.stringify(collection));
-  }
 
   function updateNewMerchant(field, input) {
     let copy = getCopy(newMerchant);

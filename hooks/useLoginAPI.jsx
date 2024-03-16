@@ -1,6 +1,7 @@
 "use client";
 import React, {useContext} from 'react';
 import {LoginContext} from '../contexts/LoginContext';
+import getCopy from '../app/lib/utils/getCopy';
 
 import useMerchantAPI from './useMerchantAPI';
 import useSession from './useSession';
@@ -129,10 +130,6 @@ const useLoginAPI = () => {
     let copy = getCopy(credentials);
     copy[field] = text;
     setCredentials(copy);
-  }
-
-  function getCopy(collection) {
-    return JSON.parse(JSON.stringify(collection));
   }
 
   return {

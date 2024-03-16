@@ -2,12 +2,14 @@
 import React, {useEffect, useState} from 'react';
 import { useSearchParams } from 'next/navigation';
 import menuData from '../../../lib/seedData/menuData';
-import restaurantsData from '../../../lib/seedData/restaurantsData';
 import CartModal from '../../../ui/cartModal';
 import Link from 'next/link';
 import useCart from '../../../../hooks/useCart';
 import Image from 'next/image';
 
+// temporary------------------------------
+
+import restaurantsData from '../../../lib/seedData/restaurantsData';
 let getMenu = (id) => {
   return menuData[id];
 }
@@ -15,6 +17,8 @@ let getMenu = (id) => {
 let getRestaurant = (id) => {
   return restaurantsData.find(res => res.id === Number(id));
 };
+
+//---------------------------------------
 
 function FoodItem({item}) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -60,6 +64,9 @@ function FoodCategory({category, items}) {
 function MenuSection() {
   const searchParams = useSearchParams();
   let merchantId = searchParams.get('merchantId');
+
+  // we get the data using the merchant id
+  // likely an API request in production
   let menu = getMenu(merchantId);
   let restaurant = getRestaurant(merchantId);
 
@@ -96,12 +103,25 @@ function CartSection() {
 }
 
 function CheckoutButton() {
-  const {cartTotal} = useCart();
+  const searchParams = useSearchParams();
+  let merchantId = searchParams.get('merchantId');
 
+  const {calculateTaxAndTotals, cart} = useCart();
+  const totals = calculateTaxAndTotals(cart)
+ 
   return (
-    <Link className="link flex" href="/restaurants/checkout"> 
+    <Link className="link flex"     
+      href={{
+        pathname: '/restaurants/checkout', 
+        query:{
+          merchantId: merchantId,
+          cart: cart,
+          totals: totals,
+        }
+      }}
+    > 
       <p className='mr-10'>Checkout</p>
-      <p>{cartTotal()}</p>
+      <p>{totals.total}</p>
     </Link>
   );
 }

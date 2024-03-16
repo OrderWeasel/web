@@ -1,5 +1,6 @@
 "use client";
 import BULLET_POINT from "../../lib/utils/bulletPoint";
+import NavButton from "../../ui/navButton";
 
 export default function Merchant(){
   return (
@@ -58,6 +59,7 @@ export default function Merchant(){
             and mark them as complete so the customer can have a better idea of when
             to arrive.
           </p>
+          <NavButton type="signup" href="/merchant/signup"/>
         </section>
       </article>
     </main>

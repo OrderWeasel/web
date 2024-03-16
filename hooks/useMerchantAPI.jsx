@@ -2,6 +2,7 @@
 import {useContext} from 'react';
 import {MerchantContext} from '../contexts/MerchantContext';
 import useSessions from './useSession';
+import getCopy from '../app/lib/utils/getCopy';
 
 const merchantsURL = process.env.HOST_URL + '/api/merchants/';
 
@@ -239,10 +240,6 @@ const useMerchantAPI = () => {
     let copy = JSON.parse(JSON.stringify(email));
     copy.email = text;
     setEmail(copy);
-  }
-
-  function getCopy(collection) {
-    return JSON.parse(JSON.stringify(collection));
   }
 
   function findIndex(id) {
