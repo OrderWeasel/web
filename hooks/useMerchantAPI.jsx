@@ -4,7 +4,7 @@ import {MerchantContext} from '../contexts/MerchantContext';
 import useSessions from './useSession';
 import getCopy from '../app/lib/utils/getCopy';
 
-const merchantsURL = process.env.HOST_URL + '/api/merchants/';
+const merchantsURL = process.env.NEXT_PUBLIC_HOST_URL + '/api/merchants/';
 
 const useMerchantAPI = () => {
   const {
@@ -27,14 +27,15 @@ const useMerchantAPI = () => {
     try {
       let response = await fetch(merchantsURL);
       let json = await response.json();
+      
 
-      if (response.status === 400) {
-        throw new Error(json.error);
-      }
+      // if (response.status === 400) {
+      //   throw new Error(json.error);
+      // }
 
-      if (JSON.stringify(merchants) !== JSON.stringify(json)) {
-        setMerchants(json);
-      }
+      // if (JSON.stringify(merchants) !== JSON.stringify(json)) {
+      //   setMerchants(json);
+      // }
 
       return response;
     } catch (e) {

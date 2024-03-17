@@ -82,14 +82,16 @@ function ModalFooter({modalVisible, setModalVisible, quantity, cart, item}) {
 }
 
 function CartModal({modalVisible, setModalVisible, item, cart}) {
-  // const route = useRoute();
   const pathname = usePathname();
 
   let itemQuantity = pathname === 'Menu' ? '0' : item.quantity;
   const [quantity, setQuantity] = useState(itemQuantity);
 
+  console.log(JSON.stringify(modalVisible))
+
   return (
-    <dialog className={modalVisible ? 'cart-modal-visible' : 'cart-modal-hidden'}>
+    <dialog 
+      className={modalVisible? 'cart-modal-visible' : 'cart-modal-hidden'}>
       <ModalHeader
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}

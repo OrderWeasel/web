@@ -1,38 +1,35 @@
 "use client";
 import {useContext} from 'react';
 import { LocalStorageContext } from '../contexts/LocalStorageContext';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-
-// refactor to use LocalStorage
 
 const useLocalStorage = () => {
   const [carts, setCarts] = useContext(LocalStorageContext);
 
-  async function loadCart(resId) {
+  function loadCart(merchantId) {
     try {
-      // const jsonCart = await AsyncStorage.getItem(String(resId));
-      return jsonCart !== null ? JSON.parse(jsonCart) : null;
+      const cart = window.getItem(merchantId);
+      cart = cart ? JSON.parse(cart) : null;
+      return cart;
     } catch (e) {
-      console.log(e);
+      throw new Error(e.message, '(at loadCart)');
     }
   }
 
-  async function updateCart(resId, cartCopy) {
+  function updateCart(merchantId, cartCopy) {
     try {
-      const jsonValue = JSON.stringify(cartCopy);
-      // await AsyncStorage.setItem(String(resId), jsonValue);
+      window.localStorage.setItem(merchantId, JSON.stringify(cartCopy));
       console.log('carts updated');
     } catch (e) {
-      console.log(e);
+      throw new Error(e.message, '(at updateCart)');
     }
   }
 
-  async function deleteCart(resId) {
+  function deleteCart(merchantId) {
     try {
-      // await AsyncStorage.removeItem(String(resId));
+      window.localStorage.removeItem(merchantId)
       console.log('cart deleted');
     } catch (e) {
-      throw new Error(e.message, 'at deleteCart');
+      throw new Error(e.message, '(at deleteCart)');
     }
   }
 

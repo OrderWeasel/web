@@ -243,6 +243,22 @@ dialog.visible {
   border-right: 1px solid blue;
 }
 
+.cart-modal-visible {
+  display: block;
+}
+
+/* 
+.cart-modal-visible::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+} 
+*/
+
+.cart-modal-hidden {
+  display: none;
+}
+
+
 /* set the default dark styles here */
 @media (prefers-color-scheme: dark) {
   :root {

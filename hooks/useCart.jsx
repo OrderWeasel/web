@@ -62,18 +62,18 @@ const useCart = () => {
     setCart(cartCopy);
   }
 
-  // function cartTotal() {
-  //   let total = 0;
+  function cartTotal() {
+    let total = 0;
 
-  //   cart.forEach(item => {
-  //     let cost = Number(item.cost);
-  //     let quantity = Number(item.quantity);
+    cart.forEach(item => {
+      let cost = Number(item.cost);
+      let quantity = Number(item.quantity);
 
-  //     total += cost * quantity;
-  //   });
+      total += cost * quantity;
+    });
 
-  //   return total.toFixed(2);
-  // }
+    return total.toFixed(2);
+  }
 
   function calculateTaxAndTotals(cart) {
     let subtotal = 0;
@@ -112,7 +112,7 @@ const useCart = () => {
     editItem,
     addItem,
     findIndex,
-    // cartTotal,
+    cartTotal,
     calculateTaxAndTotals
   };
 };

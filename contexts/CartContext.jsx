@@ -7,7 +7,7 @@ const CartProvider = props => {
   const [cart, setCart] = useState([]);
 
   useEffect(() => {
-    console.log(JSON.stringify(cart) + " (at CartContext)");
+    // console.log(JSON.stringify(cart) + " (at CartContext)");
   }, [cart]);
 
   return (

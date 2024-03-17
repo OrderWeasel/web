@@ -1,13 +1,41 @@
 /* eslint-disable react/no-unescaped-entities*/
 "use client";
-// import styles from '@/app/ui/Home.module.css';
-// import { headers } from 'next/headers';
+import React, {useEffect} from "react";
 import Image from "next/image";
 import BULLET_POINT from './lib/utils/bulletPoint';
 import NavButton from "./ui/navButton";
 import HomeHeader from './ui/homeHeader';
 
+import useSession from "../hooks/useSession";
+import useMerchantAPI from "../hooks/useMerchantAPI";
+
 export default function Home() {
+  const {createNewSession} = useSession();
+  const {getMerchants} = useMerchantAPI();
+  // const {usePushNotifications, setDeviceUUID} = usePush();
+
+  useEffect(() => {
+    (async function () {
+      try {
+        // if (usePushNotifications) {
+        //   await setDeviceUUID();
+        // }
+
+        // get Merchants loads merchants and returns header with cookie
+        let response = await getMerchants();
+
+
+        // this is messed up again???????????????????????
+        
+        // createNewSession uses response headers to set sessionID for subsequent requests
+        // createNewSession(response);
+      } catch (e) {
+        console.log(e.message + ' (at WelcomeScreen)');
+        alert(e.message);
+      }
+    })();
+  }, []); // eslint-disable-line
+
   return (
     <>
       <HomeHeader />
