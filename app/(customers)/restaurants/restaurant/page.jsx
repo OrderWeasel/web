@@ -70,7 +70,6 @@ function FoodCategory({category, items}) {
 function MenuSection() {
   const {cart, setCart, cartTotal} = useCart();
   const {loadCart} = useLocalStorage();
-
   const searchParams = useSearchParams();
   let merchantId = searchParams.get('merchantId');
 
@@ -80,13 +79,15 @@ function MenuSection() {
   let restaurant = getRestaurant(merchantId);
   let {title, category, phone, address} = restaurant;
 
+  // load the menu for the given merchant id
+  // load the cart for the given restaurant
 
   useEffect(() => {
     (async function () {
       try {
         // setResId(restaurantId);
         // loadMenu(restaurantId);
- 
+
         let cart = loadCart(merchantId);
         if (cart !== null) {
           setCart(cart);
@@ -126,15 +127,15 @@ function CartItem({item}) {
   let name = item.name;
   let cost = item.cost;
   let quantity = item.quantity;
-
   const [modalVisible, setModalVisible] = useState(false);
+  let merchantId = searchParams.get('merchantId');
 
   let handleClick = (e) => {
     setModalVisible(!modalVisible);
   };
 
   let handleDelete = (e) => {
-    deleteItem(id);
+    deleteItem(merchantId, id);
   };
 
   return (
@@ -155,29 +156,6 @@ function CartItem({item}) {
         <FaTrash />
       </figure>
     </li>
-  );
-}
-
-function CartSection() {
-  const {cart} = useCart();
-  return (
-    <section className='flex text-center w-[30%]'>
-    <h3 className='flex-initial h-[12%] flex-grow-0 mt-8'>{cart.length === 0 ? 'Your Cart is Empty' : 'Your Items'}</h3>
-    <div className='flex flex-1 flex-grow'>
-      <div className='flex-1 w-[90%] overflow-y-auto items-left items-left'>
-        <ol>
-          {cart.map((item, index) => {
-          return (
-            <CartItem item={item} key={index}/>
-            );
-          })}  
-        </ol>
-      </div>
-    </div>
-    <div className='flex flex-initial h-[12%] flex-grow-0 border-t-2 border-indigo-500 flex-row justify-center m-4 pl-2 pr-2 pt-2'>
-        <CheckoutButton />
-    </div>
-    </section>
   );
 }
 
@@ -202,6 +180,29 @@ function CheckoutButton() {
       <p>Checkout</p>
       <p>${(totals.total).toFixed(2)}</p>
     </Link>
+  );
+}
+
+function CartSection() {
+  const {cart} = useCart();
+  return (
+    <section className='flex text-center w-[30%]'>
+    <h3 className='flex-initial h-[12%] flex-grow-0 mt-8'>{cart.length === 0 ? 'Your Cart is Empty' : 'Your Items'}</h3>
+    <div className='flex flex-1 flex-grow'>
+      <div className='flex-1 w-[90%] overflow-y-auto items-left items-left'>
+        <ol>
+          {cart.map((item, index) => {
+          return (
+            <CartItem item={item} key={index}/>
+            );
+          })}  
+        </ol>
+      </div>
+    </div>
+    <div className='flex flex-initial h-[12%] flex-grow-0 border-t-2 border-indigo-500 flex-row justify-center m-4 pl-2 pr-2 pt-2'>
+        <CheckoutButton />
+    </div>
+    </section>
   );
 }
 

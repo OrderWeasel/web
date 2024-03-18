@@ -14,9 +14,10 @@ import { SEATTLE_SALES_TAX_RATE } from '../app/lib/utils/taxRates';
 const useCart = () => {
   const [cart, setCart] = useContext(CartContext);
   const {updateCart} = useLocalStorage();
-  // const {resId, menu} = useResData();
+  // const {resId, menu} = useResData(); //  merchantId replacing resId
 
-  function addItem(id, quantity) {
+  // needs merchantId ✅
+  function addItem(merchantId, itemId, quantity) {
     if (quantity === '0') {
       return;
     }
@@ -24,40 +25,42 @@ const useCart = () => {
     let cartCopy = getCopy(cart);
     let menuCopy = getCopy(menu);
     menuCopy = flattenMenu(menuCopy);
-    let index = findIndex(menuCopy, id);
+    let index = findIndex(menuCopy, itemId);
     let item = menuCopy[index];
     item.quantity = String(quantity);
     cartCopy.push(item);
 
-    updateCart(resId, cartCopy);
+    updateCart(merchantId, cartCopy);
 
     setCart(cartCopy);
   }
 
-  function deleteItem(id) {
+  // needs merchantId ✅
+  function deleteItem(merchantId, itemId) {
     let cartCopy = getCopy(cart);
-    let index = findIndex(cart, id);
+    let index = findIndex(cart, itemId);
     cartCopy = cartCopy.filter((el, idx) => {
       return index !== idx;
     });
 
-    updateCart(resId, cartCopy);
+    updateCart(merchantId, cartCopy);
 
     setCart(cartCopy);
   }
 
-  function editItem(id, quantity) {
+  // needs merchantId ✅
+  function editItem(merchantId, itemId, quantity) {
     // won't be necessary after we figure out how to reset modal state
     if (quantity === '0') {
       return;
     }
 
     let cartCopy = getCopy(cart);
-    let index = findIndex(cart, id);
+    let index = findIndex(cart, itemId);
     let item = cartCopy[index];
     item.quantity = String(quantity);
 
-    updateCart(resId, cartCopy);
+    updateCart(merchantId, cartCopy);
 
     setCart(cartCopy);
   }

@@ -25,7 +25,6 @@ import restaurantsData from '../../../lib/seedData/restaurantsData';
 let getRestaurant = (id) => {
   return restaurantsData.find(res => res.id === Number(id));
 };
-
 //---------------------------------------
 
 
@@ -211,9 +210,9 @@ function CheckoutFooter({merchantId, cart}) {
           throw new Error('Please provide valid info to submit your order');
         }
         
-        let response = await createOrder(resId, cart);
+        // let response = await createOrder(resId, cart);
 
-        //             await deleteCart(resId);
+        //             await deleteCart(merchantId);
       } catch (e) {
         alert(e.message);
       }
@@ -234,7 +233,6 @@ function CheckoutFooter({merchantId, cart}) {
 
 export default function Checkout(){
   const searchParams = useSearchParams();
-
   let merchantId = searchParams.get("merchantId");
   let cart = searchParams.get("cart");
   let totals = searchParams.get("totals");

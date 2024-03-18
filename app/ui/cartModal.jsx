@@ -1,5 +1,6 @@
 "use client";
 import React, {useState} from 'react';
+import { useSearchParams } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import useCart from '../../hooks/useCart';
 
@@ -58,6 +59,8 @@ function ModalBody({quantity, setQuantity, item}) {
 }
 
 function ModalFooter({modalVisible, setModalVisible, quantity, cart, item}) {
+  const searchParams = useSearchParams();
+  let merchantId = searchParams.get('merchantId');
   const {addItem, editItem, deleteItem, findIndex} = useCart();
   // const route = useRoute();
   const pathname = usePathname();
@@ -65,9 +68,9 @@ function ModalFooter({modalVisible, setModalVisible, quantity, cart, item}) {
 
   let updateCart = () => {
     if (findIndex(cart, id) === -1) {
-      addItem(id, quantity);
+      addItem(merchantId, id, quantity);
     } else {
-      editItem(id, quantity);
+      editItem(merchantId, id, quantity);
     }
 
     setModalVisible(!modalVisible);
