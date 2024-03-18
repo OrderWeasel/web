@@ -2,7 +2,7 @@
 import React, {useEffect, useState} from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { FaTrash } from "react-icons/fa";
 import CartModal from '../../../ui/cartModal';
 import useCart from '../../../../hooks/useCart';
@@ -24,9 +24,11 @@ let getRestaurant = (id) => {
 //---------------------------------------
 
 function FoodItem({item}) {
+  let searchParams = useSearchParams();
   const [modalVisible, setModalVisible] = useState(false);
   const {cart} = useCart();
   const {id, name, cost, description, picture} = item;
+  let merchantId = searchParams.get('merchantId');
 
   let displayModal = () => {
     setModalVisible(!modalVisible);
@@ -37,11 +39,15 @@ function FoodItem({item}) {
       onClick={displayModal}
       className='item bg-gray-500 m-2 flex rounded p-2 hover:bg-blue-500 hover:cursor-pointer'
     >
-      <CartModal cart={cart} item={item}/>
+      <CartModal 
+        cart={cart} 
+        item={item} 
+        pathname="Menu"
+      />
       <div className='flex flex-col flex-1 justify-center'>
         <p className='flex-2'>{name}</p>
-        <p  className='flex-1 text-sm'>{description}</p>
-        <p  className='flex-2'>${cost}</p>
+        <p className='flex-1 text-sm'>{description}</p>
+        <p className='flex-2'>${cost}</p>
       </div>
       <figure className='flex flex-1 justify-end'>
         <Image src="/order_weasel.jpg" className='rounded-[3rem]' width={100} height={100} alt="The Order Weasel" />
@@ -128,6 +134,8 @@ function CartItem({item}) {
   let cost = item.cost;
   let quantity = item.quantity;
   const [modalVisible, setModalVisible] = useState(false);
+
+  let searchParams = useSearchParams();
   let merchantId = searchParams.get('merchantId');
 
   let handleClick = (e) => {
@@ -147,6 +155,7 @@ function CartItem({item}) {
         setModalVisible={setModalVisible}
         item={item}
         cart={cart}
+        pathname="Cart"
       />
       <p>{quantity} x {name}</p>
       <p>${(cost * quantity).toFixed(2)}</p>
@@ -200,7 +209,7 @@ function CartSection() {
       </div>
     </div>
     <div className='flex flex-initial h-[12%] flex-grow-0 border-t-2 border-indigo-500 flex-row justify-center m-4 pl-2 pr-2 pt-2'>
-        <CheckoutButton />
+      <CheckoutButton />
     </div>
     </section>
   );

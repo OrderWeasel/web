@@ -7,7 +7,7 @@ const useLocalStorage = () => {
 
   function loadCart(merchantId) {
     try {
-      const cart = window.getItem(merchantId);
+      let cart = window.localStorage.getItem(merchantId);
       cart = cart ? JSON.parse(cart) : null;
       return cart;
     } catch (e) {

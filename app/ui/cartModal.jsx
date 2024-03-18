@@ -1,7 +1,7 @@
 "use client";
 import React, {useState} from 'react';
 import { useSearchParams } from 'next/navigation';
-import { usePathname } from 'next/navigation';
+// import { usePathname } from 'next/navigation';
 import useCart from '../../hooks/useCart';
 
 function QuantityInput({quantity, setQuantity}) {
@@ -32,39 +32,21 @@ function QuantityInput({quantity, setQuantity}) {
   );
 }
 
-function ModalHeader({modalVisible, setModalVisible, item}) {
+function CartModal({modalVisible, setModalVisible, item, cart, pathname}) {
+  const {addItem, editItem, deleteItem, findIndex} = useCart();
+  const searchParams = useSearchParams();
+  let merchantId = searchParams.get('merchantId');
+  let id = item.id;
   let name = item.name;
   let cost = item.cost;
+  let desc = item.desc;
+
+  let itemQuantity = pathname === 'Menu' ? '0' : item.quantity;
+  const [quantity, setQuantity] = useState(itemQuantity);
 
   let closeModal= () => {
     setModalVisible(!modalVisible);
   };
-
-  return (
-    <p onClick={closeModal}>
-      X
-    </p>
-  );
-}
-
-function ModalBody({quantity, setQuantity, item}) {
-  let desc = item.desc;
-
-  return (
-    <div>
-      <p>{desc}</p>
-      <QuantityInput quantity={quantity} setQuantity={setQuantity}/>
-    </div>
-  );
-}
-
-function ModalFooter({modalVisible, setModalVisible, quantity, cart, item}) {
-  const searchParams = useSearchParams();
-  let merchantId = searchParams.get('merchantId');
-  const {addItem, editItem, deleteItem, findIndex} = useCart();
-  // const route = useRoute();
-  const pathname = usePathname();
-  let id = item.id;
 
   let updateCart = () => {
     if (findIndex(cart, id) === -1) {
@@ -77,41 +59,18 @@ function ModalFooter({modalVisible, setModalVisible, quantity, cart, item}) {
   }
 
   return (
-    <div>
-      <button onClick={() => {deleteItem(id)}}>Delete Item</button>
-      <button onClick={updateCart} >{pathname === 'Menu' ? 'Add to Cart' : 'Update Cart'}</button>
-    </div>
-  );
-}
-
-function CartModal({modalVisible, setModalVisible, item, cart}) {
-  const pathname = usePathname();
-
-  let itemQuantity = pathname === 'Menu' ? '0' : item.quantity;
-  const [quantity, setQuantity] = useState(itemQuantity);
-
-  console.log(JSON.stringify(modalVisible))
-
-  return (
-    <dialog 
-      className={modalVisible? 'cart-modal-visible' : 'cart-modal-hidden'}>
-      <ModalHeader
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        item={item}
-      />
-      <ModalBody
-        quantity={quantity}
-        setQuantity={setQuantity}
-        item={item}
-      />
-      <ModalFooter
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        quantity={quantity}
-        cart={cart}
-        item={item}
-      />
+    <dialog>
+      <div>
+        <p onClick={closeModal}>X</p>
+      </div>
+      <div>
+        <p>{desc}</p>
+        <QuantityInput quantity={quantity} setQuantity={setQuantity}/>
+      </div>
+      <div>
+        <button onClick={() => {deleteItem(id)}}>Delete Item</button>
+        <button onClick={updateCart} >{pathname === 'Menu' ? 'Add to Cart' : 'Update Cart'}</button>
+      </div>
     </dialog>
   );
 }
