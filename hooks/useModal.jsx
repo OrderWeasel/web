@@ -7,22 +7,22 @@ const useModal = () => {
   const {openModalId, setOpenModalId, isVisible, setIsVisible} = useContext(ModalContext);
 
   const handleItemClick = (item) => {
-    setOpenModalId(item.id)
+    if (openModalId === item.id) {
+      setOpenModalId(null);
+      setIsVisible(false);
+    } else {
+      setOpenModalId(item.id);
+      setIsVisible(true);
+    }
   };
 
   const closeModal = () => {
-    console.log('Before: ' + openModalId); // 1
     setOpenModalId(null);
+    setIsVisible(false);
   };
-
-
-   function toggleModal() {
-    setIsVisible(!isVisible);
-  }
 
   return {
     isVisible, 
-    toggleModal,
     closeModal, 
     handleItemClick,
     openModalId,

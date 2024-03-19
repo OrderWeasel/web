@@ -2,7 +2,7 @@
 import React, {useEffect, useState} from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { FaTrash } from "react-icons/fa";
 import CartModal from '../../../ui/cartModal';
 import useCart from '../../../../hooks/useCart';
@@ -27,7 +27,8 @@ let getRestaurant = (id) => {
 //---------------------------------------
 
 function FoodCategory({category, items}) {
-  const {closeModal, openModalId, handleItemClick} = useModal();
+  const { openModalId, isVisible, handleItemClick} = useModal();
+
   return (
     <li>
     <h3>{category}</h3>
@@ -37,19 +38,31 @@ function FoodCategory({category, items}) {
           return (
             <li
               key={item.id}
-              onClick={() => {handleItemClick(item)}}
+              onClick={() =>{handleItemClick(item)}}
               className='item bg-gray-500 m-2 flex rounded p-2 hover:bg-blue-500 hover:cursor-pointer'
             >
-              {
-                openModalId === item.id && (
+
+            {isVisible && openModalId === item.id && (
+              <Modal>
+                <div 
+                  className='modal'
+                  id='modal-backdrop' 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (e.target.id === 'modal-backdrop') {
+                      handleItemClick(item);
+                    }
+                  }}
+                >
                   <CartModal 
-                    item={item} 
-                    isOpen={true} 
-                    onClose={closeModal} 
-                    pathname={"Menu"} 
+                    item={item}
+                    onClose={() => {handleItemClick(item.id)}}
+                    pathname={"Menu"}
                   />
-                )
-              }
+                </div>
+              </Modal>
+            )}
+ 
 
               <div className='flex flex-col flex-1 justify-center'>
                 <p className='flex-2'>{item.name}</p>
@@ -68,30 +81,12 @@ function FoodCategory({category, items}) {
   )
 }
 
-function ModalExample() {
-  const { isVisible, toggleModal } = useModal();
-
-  return (
-    <>
-      <button onClick={toggleModal}>Open Modal</button>
-      {isVisible && (
-        <Modal>
-          <div className='modal-content'>
-            <p>Modal Content</p>
-            <button onClick={toggleModal}>Close</button>
-          </div>
-        </Modal>
-      )}
-    </>
-  );
-}
-
 function MenuSection({menu, restaurantInfo}) {
   let {title, category, phone, address} = restaurantInfo;
   return (
     <section className='flex overflow-y-auto w-[70%] items-center pt-8 pb-8 border-r-2 border-indigo-500'>
     <div className='lg:w-[75%] md:w-[100%] pl-[10%]'>
-      <ModalExample />
+      {/* <ModalExample /> */}
       <div>
         <h2>{title}</h2>
         <div className='m-2'>

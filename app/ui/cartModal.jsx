@@ -2,14 +2,13 @@
 import React, {useEffect, useState} from 'react';
 import { useSearchParams } from 'next/navigation';
 import useCart from '../../hooks/useCart';
-// import useModal from '../../hooks/useModal';
 import { GrClose } from "react-icons/gr";
-import { Tiro_Tamil } from 'next/font/google';
-import { queryAllByAltText } from '@testing-library/react';
 
 
 function QuantityInput({quantity, setQuantity}) {
-  let decreaseQuantity = () => {
+  let decreaseQuantity = (e) => {
+    e.stopPropagation();
+
     if (quantity === '0') {
       return;
     } else {
@@ -17,7 +16,8 @@ function QuantityInput({quantity, setQuantity}) {
     }
   }
 
-  let increaseQuantity = () => {
+  let increaseQuantity = (e) => {
+    e.stopPropagation();
     setQuantity(String(Number(quantity) + 1));
   }
 
@@ -37,8 +37,8 @@ function QuantityInput({quantity, setQuantity}) {
   );
 }
 
-function CartModal({item, isOpen, onClose, pathname}) {
-  if (!isOpen) return null;
+function CartModal({item, onClose, pathname}) {
+  // if (!isOpen) return null;
   const searchParams = useSearchParams();
   const {addItem, editItem, deleteItem, findIndex, cart} = useCart();
   let itemQuantity = pathname === 'Menu' ? '0' : item.quantity;
@@ -74,37 +74,35 @@ function CartModal({item, isOpen, onClose, pathname}) {
   }
 
   return (
-    <div onClick={onClose} className='modal'>
-      <div className='modal-content flex flex-col lg:h-[35%] lg:w-[25%] md:h-[45%] sm:h-[45%] sm:w-[35%]'>
-        <div className='flex flex-initial flex-grow-0 h-[20%] flex-row border-b-2 border-grey-500 p-2 items-center justify-end'>
-          <h3 className='flex-1'>Item: {name}</h3>
-          <figure 
-            onClick={onClose} 
-            className='flex-initial w-[20%] flex justify-center hover:cursor-pointer'
-          >
-            <GrClose />
-          </figure>
+    <div className='modal-content flex flex-col lg:h-[35%] lg:w-[25%] md:h-[45%] sm:h-[45%] sm:w-[35%]'>
+      <div className='flex flex-initial flex-grow-0 h-[20%] flex-row border-b-2 border-grey-500 p-2 items-center justify-end'>
+        <h3 className='flex-1 pl-4'>Item: {name}</h3>
+        <figure 
+          onClick={onClose} 
+          className='flex-initial w-[20%] flex justify-center hover:cursor-pointer'
+        >
+          <GrClose />
+        </figure>
+      </div>
+      <div className='flex flex-1 flex-col align-center  justify-center border-b-2 border-grey-500 p-2'>
+        <div className='flex flex-1 grow-1 flex-col'>
+          <p className='flex-1'>Description: {desc}</p>
         </div>
-        <div className='flex flex-1 flex-col align-center  justify-center border-b-2 border-grey-500 p-2'>
-          <div className='flex flex-1 grow-1 flex-col'>
-            <p className='flex-1'>Description: {desc}</p>
+        <div className='flex p-4'>
+          <div className='flex-initial w-[30%]'>
+            <p className=''>Cost: ${cost}</p>
+            <p className=''>Total: ${total(cost, quantity)}</p>
           </div>
-          <div className='flex'>
-            <div className='flex-initial w-[30%]'>
-              <p className=''>Cost: ${cost}</p>
-              <p className=''>Total: ${total(cost, quantity)}</p>
-            </div>
-            <QuantityInput quantity={quantity} setQuantity={setQuantity}/>
-          </div>
+          <QuantityInput quantity={quantity} setQuantity={setQuantity}/>
         </div>
-        <div className='flex flex-initial h-[25%] flex-row p-2 justify-end'>
-          { pathname === 'Cart' && quantity === '0' ?
-            <button className="link" onClick={deleteCartItem}>Delete Item</button>:
-            <></>
-          }
+      </div>
+      <div className='flex flex-initial h-[25%] flex-row p-2 justify-end'>
+        { pathname === 'Cart' && quantity === '0' ?
+          <button className="link" onClick={deleteCartItem}>Delete Item</button>:
+          <></>
+        }
 
-          <button className="link" onClick={updateCart} >{pathname === 'Menu' ? 'Add to Cart' : 'Update Cart'}</button>
-        </div>
+        <button className="link" onClick={updateCart} >{pathname === 'Menu' ? 'Add to Cart' : 'Update Cart'}</button>
       </div>
     </div>
   );
