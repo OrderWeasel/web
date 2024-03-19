@@ -9,6 +9,8 @@ import useCart from '../../../../hooks/useCart';
 import useLocalStorage from '../../../../hooks/useLocalStorage';
 import useModal from '../../../../hooks/useModal';
 
+import Modal from '../../../ui/modal';
+
 
 // temporary------------------------------
 
@@ -66,11 +68,30 @@ function FoodCategory({category, items}) {
   )
 }
 
+function ModalExample() {
+  const { isVisible, toggleModal } = useModal();
+
+  return (
+    <>
+      <button onClick={toggleModal}>Open Modal</button>
+      {isVisible && (
+        <Modal>
+          <div className='modal-content'>
+            <p>Modal Content</p>
+            <button onClick={toggleModal}>Close</button>
+          </div>
+        </Modal>
+      )}
+    </>
+  );
+}
+
 function MenuSection({menu, restaurantInfo}) {
   let {title, category, phone, address} = restaurantInfo;
   return (
     <section className='flex overflow-y-auto w-[70%] items-center pt-8 pb-8 border-r-2 border-indigo-500'>
     <div className='lg:w-[75%] md:w-[100%] pl-[10%]'>
+      <ModalExample />
       <div>
         <h2>{title}</h2>
         <div className='m-2'>
@@ -206,39 +227,7 @@ export default function Restaurant(){
     <main className='overflow-clip p-0'>
       <MenuSection menu={menu} restaurantInfo={restaurantInfo} />
       <CartSection cart={cart} />
+      <div id="modal-root"></div>
     </main>
   );
 }
-
-
-
-
-  // const {cart, setCart, cartTotal} = useCart();
-  // const {loadCart} = useLocalStorage();
-  // const searchParams = useSearchParams();
-  // let merchantId = searchParams.get('merchantId');
-
-  // // we get the data using the merchant id rather than prop drilling
-  // // likely an API request in production
-  // let menu = getMenu(merchantId);
-  // let restaurant = getRestaurant(merchantId);
-  // let {title, category, phone, address} = restaurant;
-
-  // // load the menu for the given merchant id
-  // // load the cart for the given restaurant
-
-  // useEffect(() => {
-  //   (async function () {
-  //     try {
-  //       // setResId(restaurantId);
-  //       // loadMenu(restaurantId);
-
-  //       let cart = loadCart(merchantId);
-  //       if (cart !== null) {
-  //         setCart(cart);
-  //       }
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-  //   })();
-  // }, []); // eslint-disable-line 

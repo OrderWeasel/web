@@ -28,7 +28,6 @@ const useMerchantAPI = () => {
       let response = await fetch(merchantsURL);
       let json = await response.json();
       
-
       // if (response.status === 400) {
       //   throw new Error(json.error);
       // }
