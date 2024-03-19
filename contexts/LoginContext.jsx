@@ -35,11 +35,11 @@ const LoginProvider = props => {
   }, [loggedIn]);
 
   useEffect(() => {
-//         console.log(currentMerchant, "currentMerchant");
+//         console.log(currentMerchant + "(at LoginContext)");
   }, [currentMerchant]);
 
   useEffect(() => {
-    //     console.log(credentials);
+    // console.log(JSON.stringify(credentials) + " (at LoginContext)");
   }, [credentials]);
 
   return (

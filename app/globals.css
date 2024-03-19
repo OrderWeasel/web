@@ -242,10 +242,10 @@ dialog.visible {
 .panel:not(:last-child) {
   border-right: 1px solid blue;
 }
-
+/* 
 .cart-modal-visible {
   display: block;
-}
+} */
 
 /* 
 .cart-modal-visible::backdrop {
@@ -254,10 +254,38 @@ dialog.visible {
 } 
 */
 
-.cart-modal-hidden {
+/* .cart-modal-hidden {
   display: none;
+} */
+
+
+.modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(18, 15, 58, 0.568);
+  cursor: auto;
 }
 
+.modal-content {
+  background: white;
+  border-radius: 15px;
+  display: flex;
+  cursor: auto;
+}
+
+.modal-content p {
+  color: black;
+}
+
+.modal-content h3 {
+  color: black;
+}
 
 /* set the default dark styles here */
 @media (prefers-color-scheme: dark) {

@@ -7,6 +7,7 @@ import { FaTrash } from "react-icons/fa";
 import CartModal from '../../../ui/cartModal';
 import useCart from '../../../../hooks/useCart';
 import useLocalStorage from '../../../../hooks/useLocalStorage';
+import useModal from '../../../../hooks/useModal';
 
 
 // temporary------------------------------
@@ -23,48 +24,40 @@ let getRestaurant = (id) => {
 
 //---------------------------------------
 
-function FoodItem({item}) {
-  let searchParams = useSearchParams();
-  const [modalVisible, setModalVisible] = useState(false);
-  const {cart} = useCart();
-  const {id, name, cost, description, picture} = item;
-  let merchantId = searchParams.get('merchantId');
-
-  let displayModal = () => {
-    setModalVisible(!modalVisible);
-  }
-  
-  return (
-    <li
-      onClick={displayModal}
-      className='item bg-gray-500 m-2 flex rounded p-2 hover:bg-blue-500 hover:cursor-pointer'
-    >
-      <CartModal 
-        cart={cart} 
-        item={item} 
-        pathname="Menu"
-      />
-      <div className='flex flex-col flex-1 justify-center'>
-        <p className='flex-2'>{name}</p>
-        <p className='flex-1 text-sm'>{description}</p>
-        <p className='flex-2'>${cost}</p>
-      </div>
-      <figure className='flex flex-1 justify-end'>
-        <Image src="/order_weasel.jpg" className='rounded-[3rem]' width={100} height={100} alt="The Order Weasel" />
-      </figure>
-    </li>
-  );
-}
-
 function FoodCategory({category, items}) {
+  const {closeModal, openModalId, handleItemClick} = useModal();
   return (
     <li>
     <h3>{category}</h3>
     <section>
       <ul className='grid grid-cols-2 lg:gap-4 md:gap-1'>
-        {items.map((item, index) => {
+        {items.map((item) => {
           return (
-            <FoodItem item={item} key={index}/>
+            <li
+              key={item.id}
+              onClick={() => {handleItemClick(item)}}
+              className='item bg-gray-500 m-2 flex rounded p-2 hover:bg-blue-500 hover:cursor-pointer'
+            >
+              {
+                openModalId === item.id && (
+                  <CartModal 
+                    item={item} 
+                    isOpen={true} 
+                    onClose={closeModal} 
+                    pathname={"Menu"} 
+                  />
+                )
+              }
+
+              <div className='flex flex-col flex-1 justify-center'>
+                <p className='flex-2'>{item.name}</p>
+                <p className='flex-1 text-sm'>{item.description}</p>
+                <p className='flex-2'>${item.cost}</p>
+              </div>
+              <figure className='flex flex-1 justify-end'>
+                <Image src="/order_weasel.jpg" className='rounded-[3rem]' width={100} height={100} alt="The Order Weasel" />
+              </figure>
+            </li>
           )
         })}
       </ul>
@@ -73,37 +66,8 @@ function FoodCategory({category, items}) {
   )
 }
 
-function MenuSection() {
-  const {cart, setCart, cartTotal} = useCart();
-  const {loadCart} = useLocalStorage();
-  const searchParams = useSearchParams();
-  let merchantId = searchParams.get('merchantId');
-
-  // we get the data using the merchant id rather than prop drilling
-  // likely an API request in production
-  let menu = getMenu(merchantId);
-  let restaurant = getRestaurant(merchantId);
-  let {title, category, phone, address} = restaurant;
-
-  // load the menu for the given merchant id
-  // load the cart for the given restaurant
-
-  useEffect(() => {
-    (async function () {
-      try {
-        // setResId(restaurantId);
-        // loadMenu(restaurantId);
-
-        let cart = loadCart(merchantId);
-        if (cart !== null) {
-          setCart(cart);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    })();
-  }, []); // eslint-disable-line 
-
+function MenuSection({menu, restaurantInfo}) {
+  let {title, category, phone, address} = restaurantInfo;
   return (
     <section className='flex overflow-y-auto w-[70%] items-center pt-8 pb-8 border-r-2 border-indigo-500'>
     <div className='lg:w-[75%] md:w-[100%] pl-[10%]'>
@@ -137,10 +101,6 @@ function CartItem({item}) {
 
   let searchParams = useSearchParams();
   let merchantId = searchParams.get('merchantId');
-
-  let handleClick = (e) => {
-    setModalVisible(!modalVisible);
-  };
 
   let handleDelete = (e) => {
     deleteItem(merchantId, id);
@@ -192,8 +152,7 @@ function CheckoutButton() {
   );
 }
 
-function CartSection() {
-  const {cart} = useCart();
+function CartSection({cart}) {
   return (
     <section className='flex text-center w-[30%]'>
     <h3 className='flex-initial h-[12%] flex-grow-0 mt-8'>{cart.length === 0 ? 'Your Cart is Empty' : 'Your Items'}</h3>
@@ -216,11 +175,70 @@ function CartSection() {
 }
 
 export default function Restaurant(){
-  // useEffect here to load menu for id
+  const {cart, setCart} = useCart();
+  const {loadCart} = useLocalStorage();
+  const searchParams = useSearchParams();
+
+  let merchantId = searchParams.get('merchantId');
+
+  // temporary ------------------------------------
+  let menu = getMenu(merchantId);
+  let restaurantInfo = getRestaurant(merchantId);
+
+  // load the menu for the given merchant id
+  // load the cart for the given merchant id
+  // -----------------------------------------------
+
+  useEffect(() => {
+    (async function () {
+      try {
+        let cart = loadCart(merchantId);
+        if (cart !== null) {
+          setCart(cart);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    })();
+  }, []); // eslint-disable-line 
+
   return (
     <main className='overflow-clip p-0'>
-      <MenuSection />
-      <CartSection />
+      <MenuSection menu={menu} restaurantInfo={restaurantInfo} />
+      <CartSection cart={cart} />
     </main>
   );
 }
+
+
+
+
+  // const {cart, setCart, cartTotal} = useCart();
+  // const {loadCart} = useLocalStorage();
+  // const searchParams = useSearchParams();
+  // let merchantId = searchParams.get('merchantId');
+
+  // // we get the data using the merchant id rather than prop drilling
+  // // likely an API request in production
+  // let menu = getMenu(merchantId);
+  // let restaurant = getRestaurant(merchantId);
+  // let {title, category, phone, address} = restaurant;
+
+  // // load the menu for the given merchant id
+  // // load the cart for the given restaurant
+
+  // useEffect(() => {
+  //   (async function () {
+  //     try {
+  //       // setResId(restaurantId);
+  //       // loadMenu(restaurantId);
+
+  //       let cart = loadCart(merchantId);
+  //       if (cart !== null) {
+  //         setCart(cart);
+  //       }
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //   })();
+  // }, []); // eslint-disable-line 

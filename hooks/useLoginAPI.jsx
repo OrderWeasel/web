@@ -6,8 +6,8 @@ import getCopy from '../app/lib/utils/getCopy';
 import useMerchantAPI from './useMerchantAPI';
 import useSession from './useSession';
 
-const loginURL = process.env.HOST_URL + '/api/login/';
-const logoutURL = process.env.HOST_URL + '/api/logout/';
+const loginURL = process.env.NEXT_PUBLIC_HOST_URL + '/api/login/';
+const logoutURL = process.env.NEXT_PUBLIC_HOST_URL + '/api/logout/';
 
 const useLoginAPI = () => {
   const {
@@ -64,11 +64,14 @@ const useLoginAPI = () => {
     try {
       let response = await fetch(loginURL, requestObject);
       let json = await response.json();
+
+      debugger;
       if (response.status === 400) {
         throw new Error(json.error);
       }
 
-      createNewSession(response);
+      // no response headers???
+      // createNewSession(response);
       alert(json.message);
     } catch (e) {
       console.log(e.message + ' (at useLogin.loginAPI)');

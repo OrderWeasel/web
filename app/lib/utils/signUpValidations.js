@@ -1,27 +1,6 @@
 import {STATES, STATE_CODES} from "./statesList";
 
-// function isFullState(text) {
-//   text = text.toLowerCase();
-//   return Object.keys(STATES).find(state => state.toLowerCase() === text);
-// }
-
-// function isStateCode(text) {
-//   text = text.toLowerCase();
-//   return Object.values(STATES).find(code => code.toLowerCase() === text);
-// }
-
 function getStateCode(text) {
-  // text = text.split(' ');
-  // text = text.map(
-  //   word => word.slice(0, 1).toUpperCase() + word.slice(1).toLowerCase(),
-  // );
-  // text = text.join(' ');
-
-  // if (isFullState(text)) {
-  //   return STATES[text];
-  // } else {
-  //   return text;
-  // }
   return STATE_CODES[text];
 }
 

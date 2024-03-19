@@ -51,7 +51,8 @@ const MerchantProvider = props => {
         defaultEmail,
         defaultPassword,
         defaultStoreInfo,
-      }}>
+      }}
+    >
       {props.children}
     </MerchantContext.Provider>
   );

@@ -1,10 +1,13 @@
 "use client";
 import { CartProvider } from "../../../../contexts/CartContext";
+import { ModalProvider } from "../../../../contexts/ModalContext";
 
 export default function RestaurantLayout({ children }){
   return (
     <CartProvider>
-      {children}
+      <ModalProvider>
+        {children}
+      </ModalProvider>
     </CartProvider>
   );
 }
