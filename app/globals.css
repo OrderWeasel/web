@@ -235,8 +235,9 @@ dialog.visible {
 
 .panel {
   overflow-y: auto;
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  max-height: calc(100vh - 12rem);
 }
 
 .panel:not(:last-child) {

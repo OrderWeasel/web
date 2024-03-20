@@ -1,14 +1,12 @@
 "use client";
-import {useContext} from 'react';
-import {SignUpContext} from '../contexts/SignUpContext';
+import React, {useContext} from 'react';
+import { SignUpContext } from '../contexts/SignUpContext';
 import useSession from './useSession';
 import getCopy from '../app/lib/utils/getCopy';
 
 import {getStateCode, formatPhone} from '../app/lib/utils/signUpValidations';
 
-const HOST_URL = process.env.HOST_URL;
-
-const signUpURL = HOST_URL + '/api/signup/';
+const signUpURL = process.env.NEXT_PUBLIC_HOST_URL + '/api/signup/';
 
 const useSignUpAPI = () => {
   const {
@@ -17,26 +15,14 @@ const useSignUpAPI = () => {
     validStreet, setValidStreet, validCity, setValidCity,
     validZip, setValidZip, validState, setValidState,
     validEmail, setValidEmail, validPassword, setValidPassword,
-    validValidator, setValidValidator
+    validValidator, setValidValidator, defaultNewMerchant
   } = useContext(SignUpContext);
 
   const {createNewSession} = useSession();
 
   // API methods
   async function signUp() {
-//     let formattedBody = formatNewMerchant(newMerchant);
-
-		let formattedBody = {
-	    "email": "fwklausmeier@gmail.com",
-	    "password": "K!aus719",
-	    "restaurantName": "Red Table",
-	    "street": "5555 Elm street",
-	    "city": "Trinidad",
-	    "state": "CO",
-	    "zip": "80808",
-	    "estimatedMinutesForPickup": "30",
-	    "phone": "1234567890"
-		}
+    let formattedBody = formatNewMerchant(newMerchant);
 
     let requestObject = {
       method: 'POST',
@@ -56,6 +42,9 @@ const useSignUpAPI = () => {
       }
 
       // createNewSession(response);
+
+      resetSignUpFields();
+      resetSignUpState();
       console.log(json.message);
       return json;
     } catch (e) {
@@ -65,6 +54,44 @@ const useSignUpAPI = () => {
   }
 
   // Helper functions
+
+  function resetSignUpFields() {
+    setNewMerchant(defaultNewMerchant);
+    resetSignUpState();
+  }
+  function resetSignUpState() {
+    setValidName(false);
+    setValidPhone(false);
+    setValidStreet(false);
+    setValidCity(false);
+    setValidZip(false);
+    setValidState(false);
+    setValidEmail(false);
+    setValidPassword(false);
+    setValidValidator(false);
+  }
+
+  let handleStandardInput = (e, isValid, setField) => {  
+    let text = e.target.value;
+    if (isValid(text)) {
+      setField(true);
+    } else {
+      setField(false);
+    }
+  
+    updateNewMerchant(e.target.name, text);
+  };
+
+  let handleValidatorInput = (e, isValidValidator) => {
+    let text = e.target.value;
+    if (isValidValidator(text, newMerchant)) {
+      setValidValidator(true);
+    } else {
+      setValidValidator(false);
+    }
+
+    updateNewMerchant(e.target.name, text);
+  }
 
   function updateNewMerchant(field, input) {
     let copy = getCopy(newMerchant);
@@ -124,6 +151,10 @@ const useSignUpAPI = () => {
     isValidStoreInfo,
     isValidContactInfo,
     isValidLocationInfo,
+    handleStandardInput,
+    handleValidatorInput,
+    resetSignUpFields,
+    resetSignUpState
   };
 };
 

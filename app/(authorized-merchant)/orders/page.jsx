@@ -16,22 +16,16 @@ function OrderItem({item}) {
   }
 
   return (
-    <div className="bg-grey-500" onClick={handleClick}>
+    <div className="flex-1 bg-black p-2 mb-2 rounded" onClick={handleClick}>
       <OrderItemModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         item={item}
-      />
-      <p>
-        OrderID: {orderId}
-      </p>
+    />
+      <p>OrderID: {orderId}</p>
       <p>Name: {fullName}</p>
-      <p>
-        Phone: {customerPhone}
-      </p>
-      <p>
-        Timestamp: {timestamp}
-      </p>
+      <p>Phone: {customerPhone}</p>
+      <p>Timestamp: {timestamp}</p>
     </div>
   );
 }
@@ -40,7 +34,7 @@ function NewOrdersPanel() {
   const {orders} = useOrders();
 
   return (
-    <div className='flex-1 panel'>
+    <div className='panel flex flex-1 flex-col overflow-y-auto'>
       <h3>New Orders</h3>
       {orders.new.map((item, index) => {
         return (

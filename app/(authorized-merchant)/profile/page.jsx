@@ -3,8 +3,9 @@ import React, {useState, useEffect} from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import useLoginAPI from '../../../hooks/useLoginAPI';
+import useSignUpAPI from '../../../hooks/useSignUpAPI';
 import useMerchant from '../../../hooks/useMerchantAPI';
-import { handleStandardInput } from '../../lib/utils/handlers';
+// import { handleStandardInput } from '../../lib/utils/handlers';
 
 import {
   InvalidNameMessage,
@@ -33,6 +34,7 @@ import {
 
 function StoreInformation() {
   const {currentMerchant, setCurrentMerchant} = useLogin();
+  const {handleStandardInput} = useSignUpAPI();
   const {
     updateMerchant,
     getMerchant,

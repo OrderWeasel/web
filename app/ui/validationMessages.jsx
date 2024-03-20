@@ -4,7 +4,7 @@ import BULLET_POINT from '../lib/utils/bulletPoint';
 
 function InvalidNameMessage({validName}) {
   return (
-    <p className={ validName ? 'success' : 'error'}>
+    <p className={` flex-1 ${ validName ? 'success' : 'error'}`}>
       {BULLET_POINT} Restaurant Name is required
     </p>
   );
@@ -12,15 +12,15 @@ function InvalidNameMessage({validName}) {
 
 function InvalidPhoneMessage({validPhone}) {
   return (
-    <p className={ validPhone ? 'success' : 'error'}>
-      {BULLET_POINT} Phone number is required and must contain 10 digits eg (555-555-5555)
+    <p className={` flex-1 ${ validPhone ? 'success' : 'error'}`}>
+      {BULLET_POINT} Phone number is required and must contain 10 digits and only valid characters (0-9 and [ ( ) -])
     </p>
   );
 }
 
 function InvalidStreetMessage({validStreet}) {
   return (
-    <p className={ validStreet ? 'success' : 'error'}>
+    <p className={` flex-1 ${ validStreet ? 'success' : 'error'}`}>
       {BULLET_POINT} Street is required and must contain valid characters
       (A-Z, a-z, 0-9, ' ' and [ . , # & - ])
     </p>
@@ -29,7 +29,7 @@ function InvalidStreetMessage({validStreet}) {
 
 function InvalidCityMessage({validCity}) {
   return (
-    <p className={ validCity ? 'success' : 'error'}>
+    <p className={` flex-1 ${ validCity ? 'success' : 'error'}`}>
       {BULLET_POINT} City is required and must contain valid characters
       (A-Z, a-z, ' ' and [ ' . - ])
     </p>
@@ -38,7 +38,7 @@ function InvalidCityMessage({validCity}) {
 
 function InvalidStateMessage({validState}) {
   return (
-    <p className={ validState ? 'success' : 'error'}>
+    <p className={` flex-1 ${ validState ? 'success' : 'error'}`}>
       {BULLET_POINT} Select state
     </p>
   );
@@ -46,7 +46,7 @@ function InvalidStateMessage({validState}) {
 
 function InvalidZipMessage({validZip}) {
   return (
-    <p className={ validZip ? 'success' : 'error'}>
+    <p className={` flex-1 ${ validZip ? 'success' : 'error'}`}>
       {BULLET_POINT} Zip code is required and must contain 5 digits
     </p>
   );
@@ -54,16 +54,15 @@ function InvalidZipMessage({validZip}) {
 
 function InvalidEmailMessage({validEmail}) {
   return (
-    <p className={ validEmail ? 'success' : 'error'}>
-      {BULLET_POINT} Email field is required, must be unique, must not match
-      your password, and must be a valid email address
+    <p className={` flex-1 ${ validEmail ? 'success' : 'error'}`}>
+      {BULLET_POINT} Email field is required, and must be a valid email address
     </p>
   );
 }
 
 function InvalidValidatorMessage({validValidator}) {
   return (
-    <p className={ validValidator ? 'success' : 'error'}>
+    <p className={` flex-1 ${ validValidator ? 'success' : 'error'}`}>
       {BULLET_POINT} Verify password
     </p>
   );
@@ -71,7 +70,7 @@ function InvalidValidatorMessage({validValidator}) {
 
 function InvalidPasswordMessage({validPassword}) {
   return (
-    <p className={ validPassword ? 'success' : 'error'}>
+    <p className={` flex-1 ${ validPassword ? 'success' : 'error'}`}>
       {BULLET_POINT} Password is required and must have 8 or more characters, including 1 uppercase, 1 number, and 1 symbol
     </p>
   );
@@ -98,3 +97,8 @@ export {
   InvalidValidatorMessage,
   DeleteAccountMessage,
 };
+
+// old messages:
+// email --> {BULLET_POINT} Email field is required, must be unique, must not match
+  // your password, and must be a valid email address
+// phone --> {BULLET_POINT} Phone number is required and must contain 10 digits eg (555-555-5555)

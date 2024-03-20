@@ -48,7 +48,7 @@ const SignUpProvider = props => {
         validStreet, setValidStreet, validCity, setValidCity,
         validZip, setValidZip, validState, setValidState,
         validEmail, setValidEmail, validPassword, setValidPassword,
-        validValidator, setValidValidator
+        validValidator, setValidValidator, defaultNewMerchant
       }}
     >
       {props.children}

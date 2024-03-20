@@ -4,23 +4,26 @@ function getStateCode(text) {
   return STATE_CODES[text];
 }
 
-function isValidEmail(text, merchants, merchant) {
-  let isUnique = !merchants.find(merch => merch.email === text);
-  let password = merchant.password;
+// refactor - don't take the merchants nor the merchant, only text
+// refactor tests
+function isValidEmail(text) { //, merchants, merchant) {
+  // let isUnique = !merchants.find(merch => merch.email === text);
+  // let password = merchant.password;
   return (
     isNotEmpty(text) &&
-    text !== password &&
-    isUnique &&
+    // text !== password &&
+    // isUnique &&
     text.length >= 4 &&
     validEmailPattern(text)
   );
 }
 
+// refacor tests
 function isValidEmailCheckout(text) {
-  let merchants = [];
-  let merchant = {password: null};
+  // let merchants = [];
+  // let merchant = {password: null};
 
-  return isValidEmail(text, merchants, merchant);
+  return isValidEmail(text); //, merchants, merchant);
 }
 
 function isValidNameCheckout(text) {
@@ -31,10 +34,10 @@ function isValidValidator(text, merchant) {
   return isNotEmpty(text) && text === merchant.password;
 }
 
-function isValidPassword(text, merchant) {
-  let email = merchant.email;
+function isValidPassword(text) { //, merchant) {
+  // let email = merchant.email;
 
-  return isNotEmpty(text) && validPasswordPattern(text) && text !== email;
+  return isNotEmpty(text) && validPasswordPattern(text); // && text !== email;
 }
 
 function isValidRestaurantName(text) {
@@ -54,7 +57,9 @@ function isValidCity(text) {
 }
 
 function isValidState(text) {
-  return isNotEmpty(text); // && !!(isStateCode(text) || isFullState(text));
+  // return isNotEmpty(text); // && !!(isStateCode(text) || isFullState(text));
+  return text !== 'Select';
+
 }
 
 function isValidZip(text) {

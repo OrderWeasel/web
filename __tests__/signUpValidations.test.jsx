@@ -170,7 +170,9 @@ describe('isValidCity Tests', () => {
 });
 
 describe('isValidState Tests', () => {
-  emptyStringTest(isValidState, 'Colorado');
+  // emptyStringTest(isValidState, 'Colorado');
+
+  it.todo("should return false given the default value");
 
   it('should return true for all full length state names', () => {
     let fullNames = Object.keys(STATE_CODES);
@@ -195,30 +197,30 @@ describe('isValidZip Tests', () => {
 
 describe('isValidPassword Tests', () => {
   it('should return false given an empty string', () => {
-    let merchant = {
-      email: 'test@email.com',
-    };
+    // let merchant = {
+    //   email: 'test@email.com',
+    // };
 
     let emptyText = '';
     let validPassword = 'Secretp*ssw0rd';
 
-    expect(isValidPassword(emptyText, merchant)).toBe(false);
-    expect(isValidPassword(validPassword, merchant)).toBe(true);
+    expect(isValidPassword(emptyText)).toBe(false);
+    expect(isValidPassword(validPassword)).toBe(true);
   });
 
   it('should have at least 8 characters, including 1 uppercase letter, 1 symbol, and 1 number', () => {
-    let merchant = {
-      email: 'test@email.com',
-    };
+    // let merchant = {
+    //   email: 'test@email.com',
+    // };
 
     let validPassword = 'Secretp*ssw0rd';
     let invalidPassword1 = 'secretpassword';
     let invalidPassword2 = 'Secretpassword';
     let invalidPassword3 = 'Secretp*ssword';
-    expect(isValidPassword(validPassword, merchant)).toBe(true);
-    expect(isValidPassword(invalidPassword1, merchant)).toBe(false);
-    expect(isValidPassword(invalidPassword2, merchant)).toBe(false);
-    expect(isValidPassword(invalidPassword3, merchant)).toBe(false);
+    expect(isValidPassword(validPassword)).toBe(true);
+    expect(isValidPassword(invalidPassword1)).toBe(false);
+    expect(isValidPassword(invalidPassword2)).toBe(false);
+    expect(isValidPassword(invalidPassword3)).toBe(false);
   });
 
   it('should not be greater than 225 characters', () => {
@@ -249,56 +251,63 @@ describe('isValidPassword Tests', () => {
 });
 
 describe('isValidEmail Tests', () => {
-  let merchants = [
-    {
-      email: 'test@email.com',
-      password: 'superSecret123',
-    },
-    {
-      email: 'anotherEmail@gmail.com',
-      password: 'secret567Super',
-    },
-  ];
+  // let merchants = [
+  //   {
+  //     email: 'test@email.com',
+  //     password: 'superSecret123',
+  //   },
+  //   {
+  //     email: 'anotherEmail@gmail.com',
+  //     password: 'secret567Super',
+  //   },
+  // ];
 
-  let currentMerchant = {
-    email: 'tom@aol.com',
-    password: 'goTeam1972',
-  };
+  // let currentMerchant = {
+  //   email: 'tom@aol.com',
+  //   password: 'goTeam1972',
+  // };
 
   it('should not have a length greater than 225', () => {
     const maxLengthEmail = Array(215).fill('a').concat('@email.com').join('');
     const maxLengthPlusOne = maxLengthEmail + 'a';
 
-    expect(isValidEmail(maxLengthEmail, merchants, currentMerchant)).toBe(true);
-    expect(isValidEmail(maxLengthPlusOne, merchants, currentMerchant)).toBe(
+    // expect(isValidEmail(maxLengthEmail, merchants, currentMerchant)).toBe(true);
+    // expect(isValidEmail(maxLengthPlusOne, merchants, currentMerchant)).toBe(
+    //   false,
+    // );
+    expect(isValidEmail(maxLengthEmail)).toBe(true);
+    expect(isValidEmail(maxLengthPlusOne)).toBe(
       false,
     );
   });
 
   it('should have a length greater than 4', () => {
     let text = 'a@bcd';
-    expect(isValidEmail(text, merchants, currentMerchant)).toBe(true);
+    expect(isValidEmail(text)).toBe(true);
   });
 
-  it('should return false if email is the same as the password', () => {
-    let text = 'goTeam1972';
-    expect(isValidEmail(text, merchants, currentMerchant)).toBe(false);
-  });
+  // it('should return false if email is the same as the password', () => {
+  //   let text = 'goTeam1972';
+  //   expect(isValidEmail(text)).toBe(false);
+  // });
 
-  it('should be unique', () => {
-    let text1 = 'test@email.com';
-    let text2 = 'uniqueEmail@netscape.net';
-    expect(isValidEmail(text1, merchants, currentMerchant)).toBe(false);
-    expect(isValidEmail(text2, merchants, currentMerchant)).toBe(true);
-  });
+  // it('should be unique', () => {
+  //   let text1 = 'test@email.com';
+  //   let text2 = 'uniqueEmail@netscape.net';
+  //   expect(isValidEmail(text1)).toBe(false);
+  //   expect(isValidEmail(text2)).toBe(true);
+  // });
+
+  it.todo("integration test: should not be the same as the password");
+  it.todo("integration test: should be unique");
 
   it('should have a valid email pattern', () => {
     let invalid = 'abcde';
     let valid1 = 'a@bcd';
     let valid2 = 'valid@email.com';
-    expect(isValidEmail(invalid, merchants, currentMerchant)).toBe(false);
-    expect(isValidEmail(valid1, merchants, currentMerchant)).toBe(true);
-    expect(isValidEmail(valid2, merchants, currentMerchant)).toBe(true);
+    expect(isValidEmail(invalid)).toBe(false);
+    expect(isValidEmail(valid1)).toBe(true);
+    expect(isValidEmail(valid2)).toBe(true);
   });
 });
 
