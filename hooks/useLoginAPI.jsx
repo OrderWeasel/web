@@ -65,7 +65,6 @@ const useLoginAPI = () => {
       let response = await fetch(loginURL, requestObject);
       let json = await response.json();
 
-      debugger;
       if (response.status === 400) {
         throw new Error(json.error);
       }
@@ -86,10 +85,6 @@ const useLoginAPI = () => {
       // we're setting the current merchant on login because we call getMerchants
         // in SignInTab, so the merchants are set
       setCurrentMerchant(getMerchantByEmail(credentials.email));
-
-      // after login, we should then get the new merchant and set as current merchant
-       // rather than calling getMerchants
-
       toggleLogin();
     } catch (e) {
       console.log(e.message + ' (at useLogin.login)');

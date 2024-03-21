@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import useLoginAPI from '../../../hooks/useLoginAPI';
 import useSignUpAPI from '../../../hooks/useSignUpAPI';
-import useMerchant from '../../../hooks/useMerchantAPI';
-// import { handleStandardInput } from '../../lib/utils/handlers';
+import useMerchantAPI from '../../../hooks/useMerchantAPI';
+import { STATES } from '../../lib/utils/statesList';
 
 import {
   InvalidNameMessage,
@@ -32,37 +32,23 @@ import {
   formatPhone,
 } from '../../../app/lib/utils/signUpValidations';
 
+let handleSucessfulSubmission = (e) => {
+  alert("Successfully updated account inforamtion")    
+};
+
 function StoreInformation() {
-  const {currentMerchant, setCurrentMerchant} = useLogin();
-  const {handleStandardInput} = useSignUpAPI();
-  const {
-    updateMerchant,
-    getMerchant,
-    fillStoreInfo,
-    storeInfo,
-    updateStoreInfo,
-  } = useMerchant();
-  const [validName, setValidName] = useState(true);
-  const [validPhone, setValidPhone] = useState(true);
-  const [validStreet, setValidStreet] = useState(true);
-  const [validCity, setValidCity] = useState(true);
-  const [validState, setValidState] = useState(true);
-  const [validZip, setValidZip] = useState(true);
-  useEffect(() => {}, [
-    validName,
-    validPhone,
-    validStreet,
-    validCity,
-    validState,
-    validZip,
-  ]);
+  const {currentMerchant} = useLoginAPI();
+  const { fillStoreInfo } = useMerchantAPI();
+  const {validName, setValidName, validPhone, setValidPhone, validStreet, setValidStreet,
+  validCity, setValidCity, validState, setValidState, validZip, setValidZip, isAllValid, handleInvalidSubmission} = useSignUpAPI();
+
   useEffect(() => {
     fillStoreInfo(currentMerchant);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div>
-      <div>
+    <div className='flex'>
+      <div className='flex-1 mr-10'>
         <InvalidNameMessage validName={validName} />
         <InvalidPhoneMessage validPhone={validPhone} />
         <InvalidStreetMessage validStreet={validStreet} />
@@ -71,7 +57,7 @@ function StoreInformation() {
         <InvalidZipMessage validZip={validZip} />
       </div>
 
-      <form>
+      <form className='flex-1'>
         <div className="border-b border-gray-900/10 pb-[2rem]">
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-8">
             <div className="sm:col-span-4">
@@ -99,32 +85,18 @@ function StoreInformation() {
                 Restaurant Phone
               </label>
               <div className="mt-2">
-                <input
-                  type="tel"
-                  name="tel1"
-                  id="phone1"
-                  autoComplete="tel"
-                  className="flex-1 mr-[1rem] w-12 rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  maxLength={3}
-                />
-
-                <input
-                  type="tel"
-                  name="tel2"
-                  id="phone2"
-                  autoComplete="tel"
-                  className="flex-2 mr-[1rem] w-12 rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  maxLength={3}
-                />
-
-                <input
-                  type="tel"
-                  name="tel3"
-                  id="phone3"
-                  autoComplete="tel"
-                  className="flex-3 mr-[1rem] w-14 rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  maxLength={4}
-                />
+              <input
+                type="tel"
+                name="phone"
+                id="phone"
+                autoComplete="tel"
+                placeholder={currentMerchant.phone}
+                className="flex-1 mr-[1rem] w-30 rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 w-full"
+                maxLength={13}
+                onChange={(e) => {
+                  handleStandardInput(e, isValidPhoneNumber, setValidPhone);
+                }}
+              />
               </div>
             </div>
 
@@ -148,7 +120,7 @@ function StoreInformation() {
               </div>
             </div>
 
-            <div className="sm:col-span-2 sm:col-start-1">
+            <div className="sm:col-span-3 sm:col-start-1">
               <label htmlFor="city" className="block text-sm font-medium leading-6">
                 City
               </label>
@@ -156,7 +128,6 @@ function StoreInformation() {
                 <input
                   type="text"
                   name="city"
-                  // value={newMerchant["city"]}
                   placeholder={currentMerchant.city}
                   id="city"
                   autoComplete="address-level2"
@@ -169,7 +140,7 @@ function StoreInformation() {
               </div>
             </div>
 
-            <div className="sm:col-span-2">
+            <div className="sm:col-span-3">
               <label htmlFor="state" className="block text-sm font-medium leading-6">
                 State
               </label>
@@ -177,12 +148,13 @@ function StoreInformation() {
                 <select
                   id="state"
                   name="state"
+                  value={currentMerchant.state}
                   autoComplete="address-level1"
                   className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                 >
                   {STATES.map((state, index) => {
                     return (
-                      <option key={index}>
+                      <option key={index} value={state}>
                         {state}
                       </option>
                     )
@@ -191,7 +163,7 @@ function StoreInformation() {
               </div>
             </div>
 
-            <div className="sm:col-span-2">
+            <div className="sm:col-span-3">
               <label htmlFor="zip-code" className="block text-sm font-medium leading-6">
                 ZIP / Postal code
               </label>
@@ -199,7 +171,6 @@ function StoreInformation() {
                 <input
                   type="text"
                   name="zip"
-                  // value={newMerchant["zip"]}
                   placeholder={currentMerchant.zip}
                   id="zip-code"
                   autoComplete="postal-code"
@@ -213,40 +184,49 @@ function StoreInformation() {
             </div>
           </div>
         </div>
+        <div className="flex mt-[1rem] justify-end">
+          {isAllValid() ?
+            <Link
+              className="bg-white text-black hover:bg-indigo-300 hover:text-black px-[1rem] py-[0.5rem] rounded-[1.5rem] justify-self-end shadow-md"
+              onClick={handleSucessfulSubmission}
+              href="/profile"
+            >
+              Update Store Inoformation
+            </Link> :
+            <Link 
+              className="bg-slate-500 text-slate-700 shadow-sm ring-2 ring-inset ring-gray-500 px-[1rem] py-[0.5rem] rounded-[1.5rem] justify-self-end shadow-sm" 
+              onClick={handleInvalidSubmission}
+              href="/profile"
+            >
+              Update Store Inoformation
+            </Link>
+          }
+        </div>
       </form>
     </div>
   );
 }
 
 function LoginInformation() {
-  const {currentMerchant, setCurrentMerchant} = useLogin();
-  const {
-    updateMerchant,
-    getMerchant,
-    updateEmail,
-    updatePassword,
-    fillLoginInfo,
-    password,
-    email,
-    merchants,
-  } = useMerchant();
-  const [validEmail, setValidEmail] = useState(true);
-  const [validPassword, setValidPassword] = useState(true);
-  useEffect(() => {}, [validEmail, validPassword]);
+  const {currentMerchant, setCurrentMerchant} = useLoginAPI();
+  const { fillLoginInfo } = useMerchantAPI();
+
+  const {validEmail, setValidEmail, validPassword, setValidPassword, isAllValid, handleInvalidSubmission} = useSignUpAPI(); 
+
   useEffect(() => {
     fillLoginInfo(currentMerchant);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div>
-      <div>
+    <div className='flex'>
+      <div className='flex-1 mr-10'>
         <InvalidEmailMessage validEmail={validEmail} />
         <InvalidPasswordMessage validPassword={validPassword} />
       </div>
-      <form>
+      <form className='flex-1'>
         <div className="border-b border-gray-900/10 pb-[2rem]">
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-8">
-            <div className="sm:col-span-3">
+            <div className="sm:col-span-6">
               <label htmlFor="email" className="block text-sm font-medium leading-6">
                 Email address
               </label>
@@ -263,23 +243,43 @@ function LoginInformation() {
               </div>
             </div>
 
-            <div className="sm:col-span-2">
+            <div className="sm:col-span-8">
               <label htmlFor="password" className="block text-sm font-medium leading-6">
                 Password
               </label>
               <div className="mt-2">
+                <p className='text-sm color text-white'>*Cannot change password at this time</p>
                 <input
                   id="password"
                   name="password"
-                  placeholder={currentMerchant.password}
+                  placeholder='*********'
                   type="password"
                   autoComplete="password"
-                  className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 bg-black w-[50%]"
                   maxLength={225}
+                  disabled
                 />
               </div>
             </div>
           </div>
+        </div>
+        <div className="flex mt-[1rem] justify-end">
+          {isAllValid() ?
+            <Link
+              className="bg-white text-black hover:bg-indigo-300 hover:text-black px-[1rem] py-[0.5rem] rounded-[1.5rem] justify-self-end shadow-md"
+              onClick={handleSucessfulSubmission}
+              href="/orders"
+            >
+              Update Login Information
+            </Link> :
+            <Link 
+              className="bg-slate-500 text-slate-700 shadow-sm ring-2 ring-inset ring-gray-500 px-[1rem] py-[0.5rem] rounded-[1.5rem] justify-self-end shadow-sm" 
+              onClick={handleInvalidSubmission}
+              href="/merchant/signup"
+            >
+              Update Login Information
+            </Link>
+          }
         </div>
       </form>
     </div>
@@ -287,8 +287,8 @@ function LoginInformation() {
 }
 
 function DeleteAccount() {
-  const {currentMerchant, toggleLogout} = useLogin();
-  const {deleteMerchant} = useMerchant();
+  const {currentMerchant, toggleLogout} = useLoginAPI();
+  const {deleteMerchant} = useMerchantAPI();
   const router = useRouter();
 
   let handleDelete = async (e, href) => {
@@ -305,13 +305,13 @@ function DeleteAccount() {
   }
 
   return (
-    <div>
-      <div>
+    <div className='flex pb-10'>
+      <div className='flex-1'>
         <DeleteAccountMessage/>
       </div>
-      <div>
+      <div className='flex-1'>
         <Link
-          className='link bg-red-500'
+          className='delete-account'
           href="/"
           onClick={handleDelete}
         >
@@ -323,21 +323,21 @@ function DeleteAccount() {
 }
 
 function Profile() {
-  const {currentMerchant} = useLogin();
+  const {currentMerchant} = useLoginAPI();
 
   return (
-    <main>
-      <section>
-        <h2>{currentMerchant.restaurant_name}</h2>
-        <section>
+    <main className='flex flex-1'>
+      <section className='flex flex-1'>
+        <h2>Account Information</h2>
+        <section className='flex-1 p-4'>
           <h3>Store Information</h3>
           <StoreInformation></StoreInformation>
         </section>
-        <section>
+        <section className='flex-1 p-4'>
           <h3>Login Information</h3>
           <LoginInformation />
         </section>
-        <section>
+        <section className='flex-1 p-4'>
           <h3>Delete Account</h3>
           <DeleteAccount />
         </section>
@@ -347,81 +347,3 @@ function Profile() {
 }
 
 export default Profile;
-
-{/*
-<View style={styles.bottomMargin}>
-  <View style={{flexDirection: 'row', margin: 10}}>
-    <View style={styles.fieldInput}>
-      <Text style={[merchTextCSS.text, styles.textMargin]}>
-        Primary Contact Email
-      </Text>
-      <Text style={[merchTextCSS.text, styles.textMargin]}>Password</Text>
-    </View>
-    <View style={styles.fieldInput}>
-      <TextInput
-        style={[merchContCSS.input, styles.profileInput]}
-        placeholder={currentMerchant.email}
-        onChangeText={text => {
-          if (
-            isValidEmail(text, merchants, currentMerchant) ||
-            text.length === 0
-          ) {
-            setValidEmail(true);
-          } else {
-            setValidEmail(false);
-          }
-
-          updateEmail(text);
-        }}
-      />
-      <TextInput
-        style={[
-          merchContCSS.input,
-          styles.profileInput,
-          {backgroundColor: 'grey'},
-        ]}
-        placeholder={'********'}
-        editable={false}
-      />
-    </View>
-  </View>
-  <View style={styles.buttonContainer}>
-    <Pressable
-      style={[merchContCSS.button, merchContCSS.mainContent]}
-      onPress={async () => {
-        try {
-          if (!validEmail) {
-            throw new Error('Invalid email input. Please try again');
-          }
-
-          await updateMerchant(currentMerchant, email);
-          let merchant = await getMerchant(currentMerchant.id, true);
-          setCurrentMerchant(merchant);
-        } catch (e) {
-          alert(e.message);
-        }
-      }}>
-      <Text style={merchTextCSS.buttonText}>Change Email</Text>
-    </Pressable>
-    <Pressable
-      style={[merchContCSS.button, merchContCSS.mainContent]}
-      onPress={async () => {
-        //             // should raise a 400 error
-        //             try {
-        //               if (!validPassword) {
-        //                 throw new Error('Invalid password input. Please try again');
-        //               }
-        //
-        //               await updateMerchant(currentMerchant, password);
-        //               let merchant = await getMerchant(currentMerchant.id, true);
-        //               setCurrentMerchant(merchant);
-        //             } catch (e) {
-        //               alert(e.message);
-        //             }
-        alert('Unable to change password at this time');
-      }}>
-      <Text style={merchTextCSS.buttonText}>Change Password</Text>
-    </Pressable>
-  </View>
-</View>
-*/}

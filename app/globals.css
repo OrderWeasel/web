@@ -25,11 +25,15 @@ body {
   flex-direction: column;
   height: 100vh;
   align-items: center;
+  overflow: clip;
+  box-sizing: border-box;
 }
 
 header {
-  flex: 1;
+  flex: initial;
+  height: 8rem;
   flex-direction: row;
+  align-items: left;
   background-color: #FFF900;
   width: 100%;
   padding-left: 5%;
@@ -53,7 +57,7 @@ header img {
 
 main {
   width: 100%;
-  flex: 5;
+  flex: 1;
   display: flex;
   justify-content: center;
   padding-left: 8%;
@@ -82,7 +86,9 @@ section.welcome {
 }
 
 footer {
-  flex: 0.5;
+  /* flex: 0.5; */
+  flex: initial;
+  height: 5rem;
   background-color: #FFF900;
   width: 100%;
   padding-left: 5%;
@@ -118,8 +124,8 @@ h1 {
   font-weight: bold;
   -webkit-text-stroke: 0.05px white;
   display: inline-block;
-  flex: 3;
-  text-align: center;
+  flex-grow: 1;
+  text-align: left;
   align-self: center;
   z-index: 2;
 }
@@ -140,7 +146,7 @@ p {
 
 nav {
   display: flex;
-  flex: 5;
+  flex: 1;
   align-self: center;
   justify-content: space-around;
 }
@@ -158,6 +164,15 @@ nav button, .link {
   width: fit-content;
 }
 
+.delete-account {
+  background-color: red;
+  color: white;
+  padding: 0.33rem 1rem;
+  border-radius: 1rem;
+  margin: 1rem;
+  width: fit-content;
+}
+
 .toggle-button {
   color: white;
   padding: 0.33rem 1rem;
@@ -166,8 +181,18 @@ nav button, .link {
   width: fit-content;
 }
 
-.toggle-button:hover {
+.toggle-button:hover, .delete-account:hover {
   background-color: rgb(91, 91, 227);
+}
+
+.inactive-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+  z-index: 10; /* Ensure it's above the content */
 }
 
 .active-orders {
@@ -237,7 +262,7 @@ dialog.visible {
   overflow-y: auto;
   padding-left: 1rem;
   padding-right: 1rem;
-  max-height: calc(100vh - 12rem);
+  max-height: calc(100vh - 17rem);
 }
 
 .panel:not(:last-child) {
@@ -356,3 +381,11 @@ dialog.visible {
     text-wrap: balance;
   }
 }
+
+/* Styles for viewports less than 600px tall */
+/* @media (max-height: 599px) {
+} */
+
+/* Styles for viewports 600px tall or more */
+/* @media (min-height: 600px) {
+} */

@@ -93,6 +93,11 @@ const useSignUpAPI = () => {
     updateNewMerchant(e.target.name, text);
   }
 
+  let handleInvalidSubmission = (e) => {
+    e.preventDefault();                
+    alert('Please ensure all fields are valid before submission');
+  }
+
   function updateNewMerchant(field, input) {
     let copy = getCopy(newMerchant);
     copy[field] = input;
@@ -153,6 +158,7 @@ const useSignUpAPI = () => {
     isValidLocationInfo,
     handleStandardInput,
     handleValidatorInput,
+    handleInvalidSubmission,
     resetSignUpFields,
     resetSignUpState
   };

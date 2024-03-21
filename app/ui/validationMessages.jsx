@@ -71,7 +71,7 @@ function InvalidValidatorMessage({validValidator}) {
 function InvalidPasswordMessage({validPassword}) {
   return (
     <p className={` flex-1 ${ validPassword ? 'success' : 'error'}`}>
-      {BULLET_POINT} Password is required and must have 8 or more characters, including 1 uppercase, 1 number, and 1 symbol
+      {BULLET_POINT} Password is required and must have 8 or more characters and at least one of each of the following characters: uppercase, number, and a symbol
     </p>
   );
 }

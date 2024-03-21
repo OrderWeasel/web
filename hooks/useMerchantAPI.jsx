@@ -28,13 +28,13 @@ const useMerchantAPI = () => {
       let response = await fetch(merchantsURL);
       let json = await response.json();
       
-      // if (response.status === 400) {
-      //   throw new Error(json.error);
-      // }
+      if (response.status === 400) {
+        throw new Error(json.error);
+      }
 
-      // if (JSON.stringify(merchants) !== JSON.stringify(json)) {
-      //   setMerchants(json);
-      // }
+      if (JSON.stringify(merchants) !== JSON.stringify(json)) {
+        setMerchants(json);
+      }
 
       return response;
     } catch (e) {

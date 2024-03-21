@@ -261,12 +261,7 @@ function ContactInformation() {
 }
 
 export default function SignUp(){
-  const { isAllValid, signUp, newMerchant, resetSignUpFields} = useSignUpAPI();
-
-  let handleInvalidSubmission = (e) => {
-      e.preventDefault();                
-      alert('Please ensure all fields are valid before submission');
-  };
+  const { isAllValid, signUp, newMerchant, resetSignUpFields, handleInvalidSubmission} = useSignUpAPI();
 
   let handleSucessfulSubmission = async (e) => {
     let newMerchantMessage = `Welcome ${newMerchant.email}`;
