@@ -7,7 +7,7 @@ const oauthURL = process.env.HOST_URL + '/api/connect-square/geturl/';
 
 const useOauthAPI = () => {
 	const [merchantID, setMerchantID] = useContext(OauthContext);
-  const {createNewSession, encodeSessionId} = useSession();
+  // const {createNewSession, encodeSessionId} = useSession();
 
   async function oauth(authorizationUrl) {
 // 		let encodedURL = encodeURIComponent(authorizationUrl);

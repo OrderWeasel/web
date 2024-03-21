@@ -2,6 +2,9 @@
 import useSignUpAPI from "../../../../hooks/useSignUpAPI";
 import {STATES} from "../../../lib/utils/statesList";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import useSession from "../../../../hooks/useSession";
+import useLoginAPI from "../../../../hooks/useLoginAPI";
 
 import {
   isValidPhoneNumber,
@@ -26,7 +29,7 @@ import {
   InvalidPasswordMessage,
   InvalidValidatorMessage,
 } from '../../../ui/validationMessages';
-
+import { useEffect } from "react";
 
 function ValidationMessages() {
   const {
@@ -261,15 +264,25 @@ function ContactInformation() {
 }
 
 export default function SignUp(){
-  const { isAllValid, signUp, newMerchant, resetSignUpFields, handleInvalidSubmission} = useSignUpAPI();
+  const { isAllValid, signUp, newMerchant, handleInvalidSubmission, resetSignUpState} = useSignUpAPI();
+  const {toggleLogin, setCurrentMerchant} = useLoginAPI();
+  const {createNewSession} = useSession();
+  const router = useRouter();
+  let merchant;
 
   let handleSucessfulSubmission = async (e) => {
+    e.preventDefault();
     let newMerchantMessage = `Welcome ${newMerchant.email}`;
 
     try {
-      await signUp();
-      alert(newMerchantMessage);
-      resetSignUpFields();
+      merchant = await signUp();
+      setCurrentMerchant(merchant);
+      toggleLogin();
+      
+      alert(newMerchantMessage); // replace with flash message
+      router.push(e.target.href);
+      resetSignUpState();
+      // createNewSession(merchant.id); // not working-------------------------
     } catch (error) {
       alert(error.message);
     }

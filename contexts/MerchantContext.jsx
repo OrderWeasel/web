@@ -17,8 +17,8 @@ const defaultStoreInfo = {
   phone: '',
   street: '',
   city: '',
-  state: '',
   zip: '',
+  state: '',
 };
 
 const MerchantProvider = props => {
@@ -28,13 +28,12 @@ const MerchantProvider = props => {
   const [storeInfo, setStoreInfo] = useState(defaultStoreInfo);
 
   useEffect(() => {
-//             console.log(merchants, " from MerchantContext");
+    console.log(JSON.stringify(merchants) + " (merchants at MerchantContext)");
   }, [merchants]);
 
   useEffect(() => {
-    //       console.log(password, "password");
-    //       console.log(email, "email");
-    //     console.log(storeInfo, "storeInfo");
+    console.log(JSON.stringify(storeInfo) + " (storeInfo at MerchantContext)");
+
   }, [password, email, storeInfo]);
 
   return (

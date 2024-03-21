@@ -211,17 +211,12 @@ input, select {
   padding-left: 1rem;
 }
 
-form {
-  padding: 1.5rem;
-  border-radius: 2rem;
-}
-
 p.error {
-  color: rgb(255, 0, 0);
+  color: rgb(219, 18, 18);
 }
 
 p.success {
-  color: rgb(9, 133, 9);
+  color: rgb(11, 173, 11);
 }
 
 dialog {
@@ -297,6 +292,12 @@ dialog.visible {
   color: black;
 }
 
+form {
+  background-color: rgb(43, 43, 43);
+  padding: 1.5rem;
+  border-radius: 2rem;
+}
+
 /* set the default dark styles here */
 @media (prefers-color-scheme: dark) {
   :root {
@@ -353,15 +354,7 @@ dialog.visible {
     background-color: rgb(92, 92, 92);
     color: white;
   }
-
-  form {
-    background-color: gray;
-  }
   
-  p.error {
-    color: rgb(207, 49, 49);
-  }
-
   .active-orders {
     background-color: rgb(207, 49, 49);;
   }

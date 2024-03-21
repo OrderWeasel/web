@@ -2,61 +2,101 @@
 import React, {useState, useEffect} from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+// import useLocalStorage from '../../../hooks/useLocalStorage';
 import useLoginAPI from '../../../hooks/useLoginAPI';
 import useSignUpAPI from '../../../hooks/useSignUpAPI';
 import useMerchantAPI from '../../../hooks/useMerchantAPI';
 import { STATES } from '../../lib/utils/statesList';
+import getFullState from '../../lib/utils/getFullState';
 
 import {
-  InvalidNameMessage,
-  InvalidPhoneMessage,
-  InvalidStreetMessage,
-  InvalidCityMessage,
-  InvalidStateMessage,
   InvalidZipMessage,
+  InvalidNameMessage,
+  InvalidCityMessage,
+  InvalidPhoneMessage,
+  InvalidStateMessage,
   InvalidEmailMessage,
-  InvalidPasswordMessage,
+  InvalidStreetMessage,
   DeleteAccountMessage,
 } from '../../../app/ui/validationMessages';
 
 import {
-  isValidRestaurantName,
-  isValidStreet,
+  isValidZip,
   isValidCity,
   isValidState,
-  isValidZip,
+  isValidStreet,
   isValidPhoneNumber,
-  isValidEmail,
-  isValidPassword,
-  getStateCode,
-  formatPhone,
+  isValidRestaurantName,
+  // formatPhone,
 } from '../../../app/lib/utils/signUpValidations';
 
-let handleSucessfulSubmission = (e) => {
-  alert("Successfully updated account inforamtion")    
-};
+let resetFields = () => {
+  let inputs = document.querySelectorAll('input');
+  inputs.forEach(input => {
+    if (input.value) {
+      input.value = '';
+    }
+  });
+}
 
 function StoreInformation() {
-  const {currentMerchant} = useLoginAPI();
-  const { fillStoreInfo } = useMerchantAPI();
-  const {validName, setValidName, validPhone, setValidPhone, validStreet, setValidStreet,
-  validCity, setValidCity, validState, setValidState, validZip, setValidZip, isAllValid, handleInvalidSubmission} = useSignUpAPI();
+  // const router = useRouter();
+  // const {getAuthorizedMerchant} = useLocalStorage();
+  const {currentMerchant, setCurrentMerchant} = useLoginAPI();
+  const { 
+    // resetFields, 
+    fillStoreInfo,
+    updateStoreInfo,
+    handleProfileUpdate,
+  } = useMerchantAPI();
+  const {
+    validZip, 
+    validCity, 
+    validName, 
+    validState, 
+    validPhone, 
+    validStreet, 
+    setValidZip, 
+    setValidCity, 
+    setValidName, 
+    setValidState, 
+    setValidPhone, 
+    setValidStreet,
+    isValidStoreInfo, 
+    handleStoreInfoInput,
+    handleInvalidSubmission, 
+  } = useSignUpAPI();
 
   useEffect(() => {
+
+    // on page refresh, if state is reset, set currentMerchant to local storage authMerchant
+    // let authMerchant = getAuthorizedMerchant();
+
+    setValidZip(true); 
+    setValidCity(true);
+    setValidName(true); 
+    setValidPhone(true); 
+    setValidStreet(true);
+    setValidState(true);
+
+    // fillStoreInfo(authMerchant);
     fillStoreInfo(currentMerchant);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return (
-    <div className='flex'>
-      <div className='flex-1 mr-10'>
-        <InvalidNameMessage validName={validName} />
-        <InvalidPhoneMessage validPhone={validPhone} />
-        <InvalidStreetMessage validStreet={validStreet} />
-        <InvalidCityMessage validCity={validCity} />
-        <InvalidStateMessage validState={validState} />
-        <InvalidZipMessage validZip={validZip} />
-      </div>
+  let handleStoreInfoUpdate = async(e) => {
+    e.preventDefault();
+    try {
+      await handleProfileUpdate(currentMerchant, setCurrentMerchant);
+      alert('Successfully updated merchant.');
 
+      resetFields();
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+
+  return (
+    <div className='flex p-8'>
       <form className='flex-1'>
         <div className="border-b border-gray-900/10 pb-[2rem]">
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-8">
@@ -65,16 +105,16 @@ function StoreInformation() {
                 Restaurant Name
               </label>
               <div className="mt-2">
+                <InvalidNameMessage validName={validName} profile={true} /> 
                 <input
                   type="text"
-                  name="restaurantName"
+                  name="restaurant_name"
                   placeholder={currentMerchant.restaurant_name}
                   id="restaurant-name"
-                  autoComplete="organization"
                   className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   maxLength={225}
                   onChange={(e) => {
-                    handleStandardInput(e, isValidRestaurantName, setValidName);
+                    handleStoreInfoInput(e, isValidRestaurantName, setValidName, updateStoreInfo);
                   }}
                   />
               </div>
@@ -85,18 +125,18 @@ function StoreInformation() {
                 Restaurant Phone
               </label>
               <div className="mt-2">
-              <input
-                type="tel"
-                name="phone"
-                id="phone"
-                autoComplete="tel"
-                placeholder={currentMerchant.phone}
-                className="flex-1 mr-[1rem] w-30 rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 w-full"
-                maxLength={13}
-                onChange={(e) => {
-                  handleStandardInput(e, isValidPhoneNumber, setValidPhone);
-                }}
-              />
+                <InvalidPhoneMessage validPhone={validPhone} profile={true} />
+                <input
+                  type="tel"
+                  name="phone"
+                  id="phone"
+                  placeholder={currentMerchant.phone}
+                  className="flex-1 mr-[1rem] w-30 rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 w-full"
+                  maxLength={13}
+                  onChange={(e) => {
+                    handleStoreInfoInput(e, isValidPhoneNumber, setValidPhone, updateStoreInfo, 'phone');
+                  }}
+                />
               </div>
             </div>
 
@@ -105,16 +145,16 @@ function StoreInformation() {
                 Street address
               </label>
               <div className="mt-2">
+                <InvalidStreetMessage validStreet={validStreet} profile={true} />
                 <input
                   type="text"
                   name="street"
                   placeholder={currentMerchant.street}
                   id="street-address"
-                  autoComplete="street-address"
                   className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   maxLength={225}
                   onChange={(e) => {
-                    handleStandardInput(e, isValidStreet, setValidStreet);
+                    handleStoreInfoInput(e, isValidStreet, setValidStreet, updateStoreInfo);
                   }}
                 />
               </div>
@@ -125,16 +165,16 @@ function StoreInformation() {
                 City
               </label>
               <div className="mt-2">
+                <InvalidCityMessage validCity={validCity} profile={true} /> 
                 <input
                   type="text"
                   name="city"
                   placeholder={currentMerchant.city}
                   id="city"
-                  autoComplete="address-level2"
                   className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   maxLength={225}
                   onChange={(e) => {
-                    handleStandardInput(e, isValidCity, setValidCity);
+                    handleStoreInfoInput(e, isValidCity, setValidCity, updateStoreInfo);
                   }}
                 />
               </div>
@@ -145,14 +185,17 @@ function StoreInformation() {
                 State
               </label>
               <div className="mt-2">
+                <InvalidStateMessage validState={validState} profile={true} />
                 <select
                   id="state"
                   name="state"
-                  value={currentMerchant.state}
-                  autoComplete="address-level1"
+                  defaultValue={getFullState(currentMerchant.state)}
                   className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                  onChange={(e) => {
+                    handleStoreInfoInput(e, isValidState, setValidState, updateStoreInfo, 'state');
+                  }}
                 >
-                  {STATES.map((state, index) => {
+                  {STATES.slice(1).map((state, index) => {
                     return (
                       <option key={index} value={state}>
                         {state}
@@ -168,16 +211,16 @@ function StoreInformation() {
                 ZIP / Postal code
               </label>
               <div className="mt-2">
+                <InvalidZipMessage validZip={validZip} profile={true} />
                 <input
                   type="text"
                   name="zip"
                   placeholder={currentMerchant.zip}
                   id="zip-code"
-                  autoComplete="postal-code"
                   className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 bg-grey"
                   maxLength={5}
                   onChange={(e) => {
-                    handleStandardInput(e, isValidZip, setValidZip);
+                    handleStoreInfoInput(e, isValidZip, setValidZip, updateStoreInfo);
                   }}
                 />
               </div>
@@ -185,20 +228,20 @@ function StoreInformation() {
           </div>
         </div>
         <div className="flex mt-[1rem] justify-end">
-          {isAllValid() ?
+          {isValidStoreInfo() ?
             <Link
               className="bg-white text-black hover:bg-indigo-300 hover:text-black px-[1rem] py-[0.5rem] rounded-[1.5rem] justify-self-end shadow-md"
-              onClick={handleSucessfulSubmission}
+              onClick={handleStoreInfoUpdate}
               href="/profile"
             >
-              Update Store Inoformation
+              Update Store Information
             </Link> :
             <Link 
               className="bg-slate-500 text-slate-700 shadow-sm ring-2 ring-inset ring-gray-500 px-[1rem] py-[0.5rem] rounded-[1.5rem] justify-self-end shadow-sm" 
               onClick={handleInvalidSubmission}
               href="/profile"
             >
-              Update Store Inoformation
+              Update Store Information
             </Link>
           }
         </div>
@@ -208,21 +251,54 @@ function StoreInformation() {
 }
 
 function LoginInformation() {
+  const router = useRouter();
   const {currentMerchant, setCurrentMerchant} = useLoginAPI();
-  const { fillLoginInfo } = useMerchantAPI();
+  const {
+    email,
+    // merchants, 
+    updateEmail,
+    fillLoginInfo, 
+    handleLoginUpdate,
+  } = useMerchantAPI();
 
-  const {validEmail, setValidEmail, validPassword, setValidPassword, isAllValid, handleInvalidSubmission} = useSignUpAPI(); 
+  const {
+    validEmail, 
+    setValidEmail, 
+    handleEmailInput,
+    handleInvalidSubmission,
+    // isValidLoginInformation, 
+  } = useSignUpAPI(); 
 
   useEffect(() => {
+    setValidEmail(true);
     fillLoginInfo(currentMerchant);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  let handleEmailUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      await handleLoginUpdate(e, currentMerchant, setCurrentMerchant, email);
+      alert("Successfully updated email");
+      resetFields();
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+
+  
+  let handleStoreInfoUpdate = async(e) => {
+    e.preventDefault();
+    try {
+      await handleProfileUpdate(currentMerchant, setCurrentMerchant);
+      alert('Successfully updated merchant.');
+      resetFields();
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+
   return (
-    <div className='flex'>
-      <div className='flex-1 mr-10'>
-        <InvalidEmailMessage validEmail={validEmail} />
-        <InvalidPasswordMessage validPassword={validPassword} />
-      </div>
+    <div className='flex p-8'>
       <form className='flex-1'>
         <div className="border-b border-gray-900/10 pb-[2rem]">
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-8">
@@ -231,14 +307,17 @@ function LoginInformation() {
                 Email address
               </label>
               <div className="mt-2">
+                <InvalidEmailMessage validEmail={validEmail} profile={true} />
                 <input
                   id="email"
                   name="email"
                   placeholder={currentMerchant.email}
                   type="email"
-                  autoComplete="email"
                   className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   maxLength={225}
+                  onChange={(e) => {
+                    handleEmailInput(e, updateEmail)
+                  }}
                 />
               </div>
             </div>
@@ -248,13 +327,12 @@ function LoginInformation() {
                 Password
               </label>
               <div className="mt-2">
-                <p className='text-sm color text-white'>*Cannot change password at this time</p>
+                <p className='text-sm color'>*Cannot change password at this time</p>
                 <input
                   id="password"
                   name="password"
                   placeholder='*********'
                   type="password"
-                  autoComplete="password"
                   className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 bg-black w-[50%]"
                   maxLength={225}
                   disabled
@@ -264,10 +342,10 @@ function LoginInformation() {
           </div>
         </div>
         <div className="flex mt-[1rem] justify-end">
-          {isAllValid() ?
+          {validEmail ?
             <Link
               className="bg-white text-black hover:bg-indigo-300 hover:text-black px-[1rem] py-[0.5rem] rounded-[1.5rem] justify-self-end shadow-md"
-              onClick={handleSucessfulSubmission}
+              onClick={handleEmailUpdate}
               href="/orders"
             >
               Update Login Information
@@ -294,10 +372,9 @@ function DeleteAccount() {
   let handleDelete = async (e, href) => {
     e.preventDefault();
     try {
-      await deleteMerchant(currentMerchant.id);
+      let success = await deleteMerchant(currentMerchant.id);
       toggleLogout();
-      // navigation.navigate('MerchantHome');
-
+      alert(success.message);
       router.push(href);
     } catch (e) {
       alert(e.message);
@@ -305,7 +382,7 @@ function DeleteAccount() {
   }
 
   return (
-    <div className='flex pb-10'>
+    <div className='flex p-8'>
       <div className='flex-1'>
         <DeleteAccountMessage/>
       </div>
@@ -323,15 +400,13 @@ function DeleteAccount() {
 }
 
 function Profile() {
-  const {currentMerchant} = useLoginAPI();
-
   return (
     <main className='flex flex-1'>
       <section className='flex flex-1'>
         <h2>Account Information</h2>
         <section className='flex-1 p-4'>
           <h3>Store Information</h3>
-          <StoreInformation></StoreInformation>
+          <StoreInformation />
         </section>
         <section className='flex-1 p-4'>
           <h3>Login Information</h3>

@@ -25,8 +25,7 @@ export default function AuthorizedMerchantsHeader({takingOrders, setTakingOrders
 
   return (
     <header className='shadow-lg'>
-      {/* Restaurant Logo and the Restaurnat name - not hardcoded */}
-      <h1 className="lg:text-[5rem] md:text-[3rem]">The Red Table</h1> 
+      <h1 className="lg:text-[5rem] md:text-[3rem] md:w-[20%] sm:w-[10%]">{currentMerchant.restaurant_name}</h1> 
       <nav className="sm:w-[10%]">
         <Link
           className={takingOrders ? "toggle-button active-orders" : "toggle-button suspended-orders"}

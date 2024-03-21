@@ -3,8 +3,7 @@ import React, {useContext} from 'react';
 import { SignUpContext } from '../contexts/SignUpContext';
 import useSession from './useSession';
 import getCopy from '../app/lib/utils/getCopy';
-
-import {getStateCode, formatPhone} from '../app/lib/utils/signUpValidations';
+import {getStateCode, formatPhone, isValidEmail} from '../app/lib/utils/signUpValidations';
 
 const signUpURL = process.env.NEXT_PUBLIC_HOST_URL + '/api/signup/';
 
@@ -18,14 +17,27 @@ const useSignUpAPI = () => {
     validValidator, setValidValidator, defaultNewMerchant
   } = useContext(SignUpContext);
 
-  const {createNewSession} = useSession();
-
   // API methods
   async function signUp() {
     let formattedBody = formatNewMerchant(newMerchant);
 
+    // // temporary
+    // formattedBody = {
+    //   "email": "fwklausmeier@gmail.com",
+    //   "password": "K!aus719",
+    //   "restaurantName": "Red Table",
+    //   "street": "5555 Elm street",
+    //   "city": "Trinidad",
+    //   "state": "CO",
+    //   "zip": "80808",
+    //   "estimatedMinutesForPickup": "30",
+    //   "phone": "1234567890"
+    // };
+    // //-----------
+
     let requestObject = {
       method: 'POST',
+      credentials: "include",
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -41,35 +53,14 @@ const useSignUpAPI = () => {
         throw new Error(json.error);
       }
 
-      // createNewSession(response);
-
-      resetSignUpFields();
-      resetSignUpState();
-      console.log(json.message);
-      return json;
+      return json.newMerchantDetails;
     } catch (e) {
       console.log(e.message + ' (at useSignUp.signUp)');
       throw new Error(e.message);
     }
   }
 
-  // Helper functions
-
-  function resetSignUpFields() {
-    setNewMerchant(defaultNewMerchant);
-    resetSignUpState();
-  }
-  function resetSignUpState() {
-    setValidName(false);
-    setValidPhone(false);
-    setValidStreet(false);
-    setValidCity(false);
-    setValidZip(false);
-    setValidState(false);
-    setValidEmail(false);
-    setValidPassword(false);
-    setValidValidator(false);
-  }
+  // handlers
 
   let handleStandardInput = (e, isValid, setField) => {  
     let text = e.target.value;
@@ -81,6 +72,35 @@ const useSignUpAPI = () => {
   
     updateNewMerchant(e.target.name, text);
   };
+
+  let handleStoreInfoInput = (e, isValid, setField, updateStoreInfo, specialType) => {
+    let text = e.target.value;
+    
+    if (isValid(text) || text.length === 0) {
+      if (specialType) {
+        text = specialType === 'phone' ? 
+          formatPhone(text) :
+          getStateCode(text)
+      }
+
+      setField(true);
+    } else {
+      setField(false);
+    }
+
+    updateStoreInfo(e.target.name, text);
+  }
+
+  let handleEmailInput = (e, updateEmail) => {
+    let text = e.target.value;
+    if (isValidEmail(text) || text.length === 0) {
+      setValidEmail(true);
+    } else {
+      setValidEmail(false);
+    }
+
+    updateEmail(text)
+  }
 
   let handleValidatorInput = (e, isValidValidator) => {
     let text = e.target.value;
@@ -96,6 +116,22 @@ const useSignUpAPI = () => {
   let handleInvalidSubmission = (e) => {
     e.preventDefault();                
     alert('Please ensure all fields are valid before submission');
+  }
+
+  
+  // Helper functions
+
+  function resetSignUpState() {
+    setNewMerchant(defaultNewMerchant);
+    setValidName(false);
+    setValidPhone(false);
+    setValidStreet(false);
+    setValidCity(false);
+    setValidZip(false);
+    setValidState(false);
+    setValidEmail(false);
+    setValidPassword(false);
+    setValidValidator(false);
   }
 
   function updateNewMerchant(field, input) {
@@ -118,49 +154,50 @@ const useSignUpAPI = () => {
   }
 
   function isValidStoreInfo() {
-    return validName && validPhone;
+    return validName && validPhone && validState && validCity && validStreet && validZip;
   }
 
-  function isValidLocationInfo() {
-    return validStreet && validCity && validZip && validState;
+  function isValidLoginInformation() {
+    return validEmail;
   }
 
-	function isValidContactInfo() {
-		return validEmail && validPassword && validValidator;
-	}
+	// function isValidContactInfo() {
+	// 	return validEmail && validPassword && validValidator;
+	// }
 
   return {
+    signUp,
+    validZip,
+    validCity,
+    validName,
+    validEmail,
+    validState,
+    validPhone,
+    validStreet,
+    validPassword,
+    validValidator,
+    setValidZip,
+    setValidCity,
+    setValidName,
+    setValidEmail,
+    setValidPhone,
+    setValidState,
+    setValidStreet,
+    setValidPassword,
+    setValidValidator,
+    newMerchant,
     formatNewMerchant,
     updateNewMerchant,
-    newMerchant,
-    signUp,
-    validName,
-    setValidName,
-    validPhone,
-    setValidPhone,
-    validStreet,
-    setValidStreet,
-    validCity,
-    setValidCity,
-    validZip,
-    setValidZip,
-    validState,
-    setValidState,
-    validEmail,
-    setValidEmail,
-    validPassword,
-    setValidPassword,
-    validValidator,
-    setValidValidator,
     isAllValid,
     isValidStoreInfo,
-    isValidContactInfo,
-    isValidLocationInfo,
+    isValidLoginInformation,
+    resetSignUpState,
+    // isValidLocationInfo,
+    handleEmailInput,
     handleStandardInput,
     handleValidatorInput,
+    handleStoreInfoInput,
     handleInvalidSubmission,
-    resetSignUpFields,
-    resetSignUpState
   };
 };
 

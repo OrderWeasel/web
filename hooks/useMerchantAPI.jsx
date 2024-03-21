@@ -2,20 +2,22 @@
 import {useContext} from 'react';
 import {MerchantContext} from '../contexts/MerchantContext';
 import useSessions from './useSession';
-import getCopy from '../app/lib/utils/getCopy';
+// import getCopy from '../app/lib/utils/getCopy';
 
 const merchantsURL = process.env.NEXT_PUBLIC_HOST_URL + '/api/merchants/';
 
 const useMerchantAPI = () => {
   const {
-    merchants,
-    setMerchants,
     email,
     setEmail,
     password,
-    setPassword,
     storeInfo,
+    merchants,
+    setPassword,
     setStoreInfo,
+    setMerchants,
+    defaultEmail,
+    defaultStoreInfo,
   } = useContext(MerchantContext);
 
   const {encodeSessionId} = useSessions();
@@ -36,7 +38,7 @@ const useMerchantAPI = () => {
     try {
       let response = await fetch(merchantsURL, requestObj);
       let json = await response.json();
-      
+
       if (response.status === 400) {
         throw new Error(json.error);
       }
@@ -45,7 +47,6 @@ const useMerchantAPI = () => {
         setMerchants(json);
       }
 
-      // return response;
     } catch (e) {
       console.log(e.message + ' (at getMerchants)');
       throw new Error(e.message);
@@ -53,13 +54,13 @@ const useMerchantAPI = () => {
   }
 
   async function getMerchant(merchantId, update = false) {
-    let sessionID = encodeSessionId();
-    let cookie = `connect.sid=${sessionID}`;
+    // let sessionID = encodeSessionId();
+    // let cookie = `connect.sid=${sessionID}`;
     let requestObject = {
       method: 'GET',
       credentials: "include",
       headers: {
-        Cookie: cookie,
+        // Cookie: cookie,
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
@@ -103,7 +104,6 @@ const useMerchantAPI = () => {
 
       let json = await Promise.all(responses.map(response => response.json()));
       json.forEach(obj => console.log(obj.message || obj.error));
-      alert('Successfully updated merchant.');
     } catch (e) {
       console.log(e.message + ' (at useMerchant.updateMerchant)');
       throw new Error(e.message);
@@ -112,12 +112,13 @@ const useMerchantAPI = () => {
 
   async function deleteMerchant(id) {
     removeMerchant(id);
-    let sessionID = encodeSessionId();
-    let cookie = `connect.sid=${sessionID}`;
+    // let sessionID = encodeSessionId();
+    // let cookie = `connect.sid=${sessionID}`;
     let requestObj = {
       method: 'DELETE',
+      credentials: 'include',
       headers: {
-        Cookie: cookie,
+        // Cookie: cookie,
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
@@ -127,15 +128,34 @@ const useMerchantAPI = () => {
     try {
       let res = await fetch(merchantsURL + id, requestObj);
       let json = await res.json();
-
       if (res.status === 400) {
         throw new Error(json.error);
       }
-
-      alert(json.message);
+      return json.message;
     } catch (e) {
       console.log(e.message + ' (at deleteMerchant)');
       throw new Error(e.message);
+    }
+  }
+
+  // handlers
+  async function handleProfileUpdate(currentMerchant, setCurrentMerchant) {
+    try {
+      await updateMerchant(currentMerchant, storeInfo);
+      let merchant = await getMerchant(currentMerchant.id, true);
+      setCurrentMerchant(merchant);
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  async function handleLoginUpdate(e, currentMerchant, setCurrentMerchant, email) {
+    try {
+      await updateMerchant(currentMerchant, email);
+      let merchant = await getMerchant(currentMerchant.id, true);
+      setCurrentMerchant(merchant);
+    } catch (error) {
+      throw new Error(error.message);
     }
   }
 
@@ -229,9 +249,9 @@ const useMerchantAPI = () => {
     // need to set to hidden unencrypted password
     // get merchant by currentMerchant.id ?
     // route to return unencrypted password ?
-    setPassword({
-      password: currentMerchant.password,
-    });
+    // setPassword({
+    //   password: currentMerchant.password,
+    // });
   }
 
   function updateStoreInfo(field, text) {
@@ -258,20 +278,22 @@ const useMerchantAPI = () => {
   }
 
   return {
-    addNewMerchant,
-    getMerchants,
-    getMerchant,
+    email,
+    password,
     merchants,
+    storeInfo,
+    getMerchant,
+    updateEmail,
+    getMerchants,
+    fillStoreInfo,
+    fillLoginInfo,
+    addNewMerchant,
     updateMerchant,
     deleteMerchant,
     updatePassword,
-    updateEmail,
-    fillStoreInfo,
-    fillLoginInfo,
-    storeInfo,
     updateStoreInfo,
-    email,
-    password,
+    handleLoginUpdate,
+    handleProfileUpdate,
   };
 };
 

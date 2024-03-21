@@ -21,18 +21,11 @@ export default function Home() {
         //   await setDeviceUUID();
         // }
 
-        // get Merchants loads merchants and returns header with cookie
-        // let response = await getMerchants();
+        // returns cookie
+        await getMerchants(); 
         
-        // the cookie is available via document, not response headers
-        await getMerchants();
-
-        
-        // createNewSession uses response headers to set sessionID for subsequent requests
-        // createNewSession(response);
-
-        // browser filters out the set-cookie header
-        createNewSession(document.cookie);
+        // create session for anonymous user from cookie (document.cookie)
+        // createNewSession();
       } catch (e) {
         console.log(e.message + ' (at WelcomeScreen)');
         alert(e.message);

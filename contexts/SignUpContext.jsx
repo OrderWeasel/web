@@ -30,6 +30,21 @@ const SignUpProvider = props => {
     estimatedMinutesForPickup: 30,
   }
 
+    // // temporary
+    // defaultNewMerchant  = {
+    //   "restaurantName": "Red Table",
+    //   "phone": "1234567890",
+    //   "street": "5555 Elm street",
+    //   "city": "Trinidad",
+    //   "state": "CO",
+    //   "zip": "80808",
+    //   "email": "fwklausmeier@gmail.com",
+    //   "password": "K!aus719",
+    //   "validator": "K!aus719",
+    //   "estimatedMinutesForPickup": "30",
+    // };
+    //   //-----------
+
   const [newMerchant, setNewMerchant] = useState(defaultNewMerchant);
 
   useEffect(() => {
