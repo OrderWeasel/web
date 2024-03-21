@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import useLoginAPI from "../../hooks/useLoginAPI";
 
 export default function AuthorizedMerchantsHeader({takingOrders, setTakingOrders}) {
-  const {logout} = useLoginAPI();
+  const {logout, currentMerchant} = useLoginAPI();
   const router = useRouter();
   let toggleButton = () => {
     setTakingOrders(!takingOrders);
@@ -15,7 +15,7 @@ export default function AuthorizedMerchantsHeader({takingOrders, setTakingOrders
   let handleLogOut = async (e) => {
     e.preventDefault();
     try {
-      let success = await logout();
+      let success = await logout(currentMerchant.id);
       alert(success.message);
       router.push(e.target.href);
     } catch (error) {

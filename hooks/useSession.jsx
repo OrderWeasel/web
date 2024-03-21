@@ -16,8 +16,10 @@ const useSession = () => {
     return encodeURIComponent(sessionID);
   }
 
-  function createNewSession(response) {
-    let sessionId = decodeAndFormatCookie(response.headers.get('set-cookie'));
+  // function createNewSession(response) {
+  function createNewSession(cookie) {
+    // let sessionId = decodeAndFormatCookie(response.headers.get('set-cookie'));
+    let sessionId = decodeAndFormatCookie(cookie);    
     setSessionID(sessionId);
   }
 

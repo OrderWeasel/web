@@ -54,6 +54,7 @@ const useLoginAPI = () => {
   async function loginAPI(credentials) {
     let requestObject = {
       method: 'POST',
+      credentials: "include",
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -69,8 +70,11 @@ const useLoginAPI = () => {
         throw new Error(json.error);
       }
 
-      // no response headers???
+      // set-cookie filtered out by browser
       // createNewSession(response);
+
+      debugger;
+      createNewSession(document.cookie);
       alert(json.message);
     } catch (e) {
       console.log(e.message + ' (at useLogin.loginAPI)');

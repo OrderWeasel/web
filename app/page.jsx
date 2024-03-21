@@ -22,13 +22,17 @@ export default function Home() {
         // }
 
         // get Merchants loads merchants and returns header with cookie
-        let response = await getMerchants();
+        // let response = await getMerchants();
+        
+        // the cookie is available via document, not response headers
+        await getMerchants();
 
-
-        // this is messed up again???????????????????????
         
         // createNewSession uses response headers to set sessionID for subsequent requests
         // createNewSession(response);
+
+        // browser filters out the set-cookie header
+        createNewSession(document.cookie);
       } catch (e) {
         console.log(e.message + ' (at WelcomeScreen)');
         alert(e.message);

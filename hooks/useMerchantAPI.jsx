@@ -24,8 +24,17 @@ const useMerchantAPI = () => {
 
   // should be an anonymous user that calls this when loading SignInTab
   async function getMerchants() {
+    let requestObj = {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }, 
+    };
+
     try {
-      let response = await fetch(merchantsURL);
+      let response = await fetch(merchantsURL, requestObj);
       let json = await response.json();
       
       if (response.status === 400) {
@@ -36,7 +45,7 @@ const useMerchantAPI = () => {
         setMerchants(json);
       }
 
-      return response;
+      // return response;
     } catch (e) {
       console.log(e.message + ' (at getMerchants)');
       throw new Error(e.message);
@@ -48,6 +57,7 @@ const useMerchantAPI = () => {
     let cookie = `connect.sid=${sessionID}`;
     let requestObject = {
       method: 'GET',
+      credentials: "include",
       headers: {
         Cookie: cookie,
         Accept: 'application/json',
@@ -157,6 +167,7 @@ const useMerchantAPI = () => {
 
       let requestObject = {
         method: 'PATCH',
+        credentials: "include",
         headers: {
           Cookie: cookie,
           Accept: 'application/json',
