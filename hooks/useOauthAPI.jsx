@@ -1,50 +1,44 @@
 "use client";
 import React, {useContext} from 'react';
 import { OauthContext } from '../contexts/OauthContext';
-import useSession from './useSession';
 
-const oauthURL = process.env.HOST_URL + '/api/connect-square/geturl/';
+const oauthURL = process.env.NEXT_PUBLIC_HOST_URL + '/api/connect-square/geturl/';
 
 const useOauthAPI = () => {
 	const [merchantID, setMerchantID] = useContext(OauthContext);
-  // const {createNewSession, encodeSessionId} = useSession();
 
   async function oauth(authorizationUrl) {
-// 		let encodedURL = encodeURIComponent(authorizationUrl);
-// 			let response = await fetch(authorizationUrl);
-// 			if (!response.ok) {
-// 				throw new Error("Something went wrong")
-// 			}
+    // const openLinkInNewWindow = (url) => {
+    //   window.open(url, '_blank');
+    // };
+
+    const openLink = (url) => {
+      window.location.href = url;
+    }
 
 		try {
 			console.log('Fetching oauth at: ' + authorizationUrl);
-			const supported = await Linking.canOpenURL(authorizationUrl);
-
-			if (supported) {
-				await Linking.openURL(authorizationUrl);
-			} else {
-				throw new Error('Cannot open URL: ' + authorizationUrl);
-			}
+      // openLinkInNewWindow(authorizationUrl);
+      openLink(authorizationUrl);
 		} catch (error) {
 			throw new Error(error.message);
 		}
   }
 
-  async function getAuthURL() {
-    let sessionID = encodeSessionId();
-    let cookie = `connect.sid=${sessionID}`;
+  async function getAuthURL(merchantId) {
     let requestObject = {
       method: 'GET',
+      credentials: "include",
       headers: {
-        Cookie: cookie,
         Accept: 'application/json',
         'Content-Type': 'application/json',
       }
     }
 
     try {
-			let response = await fetch(oauthURL + merchantID, requestObject);
-			let json = response.json();
+      let response = await fetch(oauthURL + merchantId, requestObject);
+			let json = await response.json();
+
 			return json;
     } catch (error) {
 			throw new Error(error.message);

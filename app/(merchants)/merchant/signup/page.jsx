@@ -4,7 +4,6 @@ import useSignUpAPI from "../../../../hooks/useSignUpAPI";
 import {STATES} from "../../../lib/utils/statesList";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import useSession from "../../../../hooks/useSession";
 import useLoginAPI from "../../../../hooks/useLoginAPI";
 
 import {
@@ -266,7 +265,6 @@ function ContactInformation() {
 export default function SignUp(){
   const { isAllValid, signUp, newMerchant, handleInvalidSubmission, resetSignUpState} = useSignUpAPI();
   const {toggleLogin, setCurrentMerchant} = useLoginAPI();
-  const {createNewSession} = useSession();
   const router = useRouter();
   let merchant;
 
@@ -285,7 +283,6 @@ export default function SignUp(){
       alert(newMerchantMessage); // replace with flash message
       router.push(e.target.href);
       resetSignUpState();
-      // createNewSession(merchant.id); // not working-------------------------
     } catch (error) {
       alert(error.message);
     }
@@ -310,7 +307,7 @@ export default function SignUp(){
                 <Link
                   className="bg-white text-black hover:bg-indigo-300 hover:text-black px-[1rem] py-[0.5rem] rounded-[1.5rem] justify-self-end shadow-md"
                   onClick={handleSucessfulSubmission}
-                  href="/orders"
+                  href="/oauth"
                 >
                   Submit
                 </Link> :

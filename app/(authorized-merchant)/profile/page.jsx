@@ -29,6 +29,7 @@ import {
   isValidRestaurantName,
   // formatPhone,
 } from '../../../app/lib/utils/signUpValidations';
+import { noSSR } from 'next/dynamic';
 
 let resetFields = () => {
   let inputs = document.querySelectorAll('input');
@@ -37,6 +38,19 @@ let resetFields = () => {
       input.value = '';
     }
   });
+}
+
+let checkFields = (currentMerchant) => {
+  let inputs = document.querySelectorAll('input');
+  let select = document.querySelector('select');
+
+  // slice removes password input
+  let allEqual = [...inputs].slice(0, 6).every(input => {
+    let currentField = input.name;
+    return input.placeholder === currentMerchant[currentField];
+  });
+
+  return allEqual && select.value === getFullState(currentMerchant.state);
 }
 
 function StoreInformation() {
@@ -83,6 +97,14 @@ function StoreInformation() {
 
   let handleStoreInfoUpdate = async(e) => {
     e.preventDefault();
+    
+    let noChanges = checkFields(currentMerchant);
+    
+    if (noChanges) {
+      alert('No changes to submit. Please update profile information using input fields.');
+      return;
+    }
+
     try {
       await handleProfileUpdate(currentMerchant, setCurrentMerchant);
       alert('Successfully updated merchant.');
@@ -271,6 +293,14 @@ function LoginInformation() {
 
   let handleEmailUpdate = async (e) => {
     e.preventDefault();
+
+    let noChanges = checkFields(currentMerchant);
+
+    if (noChanges) {
+      alert("No changes to submit. Please update email using the input field");
+      return;
+    }
+
     try {
       await handleLoginUpdate(e, currentMerchant, setCurrentMerchant, email);
       alert("Successfully updated email");

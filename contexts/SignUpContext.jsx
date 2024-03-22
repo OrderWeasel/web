@@ -4,8 +4,6 @@ import {createContext, useState, useEffect} from 'react';
 
 const SignUpContext = createContext(null);
 
-
-
 const SignUpProvider = props => {
   const [validName, setValidName] = useState(false);
   const [validPhone, setValidPhone] = useState(false);
@@ -43,6 +41,18 @@ const SignUpProvider = props => {
     validator: '',
     estimatedMinutesForPickup: 30,
   }
+
+  defaultNewMerchant = {
+    "email": "email@gmail.com",
+    "password": "P@55word",
+    "restaurantName": "Red Table",
+    "street": "5555 Elm street",
+    "city": "Fort Collins",
+    "state": "CO",
+    "zip": "80827",
+    "estimatedMinutesForPickup": "30",
+    "phone": "1234567890"
+  };
 
   const [newMerchant, setNewMerchant] = useState(defaultNewMerchant);
 

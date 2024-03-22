@@ -22,17 +22,17 @@ const useSignUpAPI = () => {
     let formattedBody = formatNewMerchant(newMerchant);
 
     // // temporary
-    // formattedBody = {
-    //   "email": "fwklausmeier@gmail.com",
-    //   "password": "K!aus719",
-    //   "restaurantName": "Red Table",
-    //   "street": "5555 Elm street",
-    //   "city": "Trinidad",
-    //   "state": "CO",
-    //   "zip": "80808",
-    //   "estimatedMinutesForPickup": "30",
-    //   "phone": "1234567890"
-    // };
+    formattedBody = {
+      "email": "fwklausmeier@gmail.com",
+      "password": "K!aus719",
+      "restaurantName": "Red Table",
+      "street": "5555 Elm street",
+      "city": "Trinidad",
+      "state": "CO",
+      "zip": "80808",
+      "estimatedMinutesForPickup": "30",
+      "phone": "1234567890"
+    };
     // //-----------
 
     let requestObject = {
@@ -141,8 +141,9 @@ const useSignUpAPI = () => {
   }
 
   function isAllValid() {
-    return validName && validPhone && validStreet && validCity && validZip && validState
-    && validEmail && validPassword && validValidator
+    // return validName && validPhone && validStreet && validCity && validZip && validState
+    // && validEmail && validPassword && validValidator
+    return true
   }
 
   function isValidStoreInfo() {

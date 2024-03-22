@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
 // import { render, screen } from '@testing-library/react'
 
-import Oauth from '../app/(merchants)/merchant/signup/oauth/page';
+import Oauth from '../app/(authorized-merchant)/oauth/page';
 
 
 describe('Oauth', () => {
