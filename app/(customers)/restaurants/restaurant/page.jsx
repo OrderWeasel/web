@@ -4,27 +4,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { FaTrash } from "react-icons/fa";
-import CartModal from '../../../ui/cartModal';
-import useCart from '../../../../hooks/useCart';
 import useLocalStorage from '../../../../hooks/useLocalStorage';
+import useMerchantData from '../../../../hooks/useMerchantData';
 import useModal from '../../../../hooks/useModal';
+import useCart from '../../../../hooks/useCart';
 
+import CartModal from '../../../ui/cartModal';
 import Modal from '../../../ui/modal';
-
-
-// temporary------------------------------
-
-import menuData from '../../../lib/seedData/menuData';
-import restaurantsData from '../../../lib/seedData/restaurantsData';
-let getMenu = (id) => {
-  return menuData[id];
-}
-
-let getRestaurant = (id) => {
-  return restaurantsData.find(res => res.id === Number(id));
-};
-
-//---------------------------------------
 
 function FoodCategory({category, items}) {
   const { openModalId, isVisible, handleItemClick} = useModal();
@@ -81,8 +67,10 @@ function FoodCategory({category, items}) {
   )
 }
 
-function MenuSection({menu, restaurantInfo}) {
-  let {title, category, phone, address} = restaurantInfo;
+function MenuSection() {
+  const {restaurantData, menuData} = useMerchantData();
+  let {title, category, phone, address} = restaurantData;
+
   return (
     <section className='flex overflow-y-auto w-[70%] items-center pt-8 pb-8 border-r-2 border-indigo-500'>
     <div className='lg:w-[75%] md:w-[100%] pl-[10%]'>
@@ -96,7 +84,7 @@ function MenuSection({menu, restaurantInfo}) {
         </div>
       </div>
       <ul>
-        {menu.map((section, index) => {
+        {menuData.map((section, index) => {
           return (
             <FoodCategory category={section.title} items={section.data} key={index}/>
           )
@@ -108,37 +96,43 @@ function MenuSection({menu, restaurantInfo}) {
 }
 
 function CartItem({item}) {
-  const {deleteItem, cart} = useCart();
-  let id = item.id;
-  let name = item.name;
-  let cost = item.cost;
-  let quantity = item.quantity;
-  const [modalVisible, setModalVisible] = useState(false);
-
-  let searchParams = useSearchParams();
-  let merchantId = searchParams.get('merchantId');
-
-  let handleDelete = (e) => {
-    deleteItem(merchantId, id);
-  };
+  const {openModalId, isVisible, handleItemClick} = useModal();
+  const {handleDelete} = useCart();
+  // const {merchantId} = useMerchantData();
+  let {id, name, cost, quantity} = item;
 
   return (
     <li
-      onClick={handleClick}
+      onClick={() =>{handleItemClick(item)}}
+      className='flex flex-row hover:cursor-pointer mb-2 justify-between ml-[10%] mr-[10%] border-t-2 border-gray-800 pl-2 pr-2'
     >
-      <CartModal 
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        item={item}
-        cart={cart}
-        pathname="Cart"
-      />
-      <p>{quantity} x {name}</p>
-      <p>${(cost * quantity).toFixed(2)}</p>
+    {isVisible && openModalId === id && (
+      <Modal>
+        <div 
+          className='modal'
+          id='modal-backdrop' 
+          onClick={(e) => {
+            e.stopPropagation();
+            if (e.target.id === 'modal-backdrop') {
+              handleItemClick(item);
+            }
+          }}
+        >
+          <CartModal 
+            item={item}
+            onClose={() => {handleItemClick(id)}}
+            pathname={"Cart"}
+          />
+        </div>
+      </Modal>
+    )}
+      <p className='flex-initial w-[50%] text-center '>{quantity} x {name}</p>
+      <p className='flex-initial w-[20%] text-left'>${(cost * quantity).toFixed(2)}</p>
       <figure
-        onClick={handleDelete}
+        onClick={(e) => {handleDelete(e, id)}}
+        className='flex flex-1 self-center justify-center'
       >
-        <FaTrash />
+        <FaTrash className='text-white hover:text-red-500' />
       </figure>
     </li>
   );
@@ -194,33 +188,22 @@ export default function Restaurant(){
   const {cart, setCart} = useCart();
   const {loadCart} = useLocalStorage();
   const searchParams = useSearchParams();
-
+  const {loadMenu, setMerchantId, loadRestaurantData} = useMerchantData();
   let merchantId = searchParams.get('merchantId');
 
-  // temporary ------------------------------------
-  let menu = getMenu(merchantId);
-  let restaurantInfo = getRestaurant(merchantId);
-
-  // load the menu for the given merchant id
-  // load the cart for the given merchant id
-  // -----------------------------------------------
-
   useEffect(() => {
-    (async function () {
-      try {
-        let cart = loadCart(merchantId);
-        if (cart !== null) {
-          setCart(cart);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    })();
+    setMerchantId(merchantId);
+    loadMenu(merchantId);
+    loadRestaurantData(merchantId);
+    let cart = loadCart(merchantId);
+    if (cart !== null) {
+      setCart(cart);
+    }
   }, []); // eslint-disable-line 
 
   return (
     <main className='overflow-clip p-0'>
-      <MenuSection menu={menu} restaurantInfo={restaurantInfo} />
+      <MenuSection />
       <CartSection cart={cart} />
       <div id="modal-root"></div>
     </main>

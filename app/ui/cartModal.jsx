@@ -1,9 +1,8 @@
 "use client";
 import React, {useEffect, useState} from 'react';
-import { useSearchParams } from 'next/navigation';
+// import { useSearchParams } from 'next/navigation';
 import useCart from '../../hooks/useCart';
 import { GrClose } from "react-icons/gr";
-
 
 function QuantityInput({quantity, setQuantity}) {
   let decreaseQuantity = (e) => {
@@ -39,33 +38,30 @@ function QuantityInput({quantity, setQuantity}) {
 
 function CartModal({item, onClose, pathname}) {
   // if (!isOpen) return null;
-  const searchParams = useSearchParams();
-  const {addItem, editItem, deleteItem, findIndex, cart} = useCart();
+  // const searchParams = useSearchParams();
+  const {addItem, editItem, findIndex, cart, handleDelete} = useCart();
   let itemQuantity = pathname === 'Menu' ? '0' : item.quantity;
   const [quantity, setQuantity] = useState(itemQuantity);
+  const {id, name, cost, desc} = item;
 
   useEffect(() => {
     console.log(quantity);
   }, [quantity]);
 
-  let merchantId = searchParams.get('merchantId');
-  let id = item.id;
-  let name = item.name;
-  let cost = item.cost;
-  let desc = item.description;
+  // let merchantId = searchParams.get('merchantId');
+
+  // let id = item.id;
+  // let name = item.name;
+  // let cost = item.cost;
+  // let desc = item.description;
 
   let updateCart = () => {
     if (findIndex(cart, id) === -1) {
-      addItem(merchantId, id, quantity);
+      addItem(id, quantity);
     } else {
-      editItem(merchantId, id, quantity);
+      editItem(id, quantity);
     }
     
-    onClose();
-  };
-
-  let deleteCartItem = () => {
-    deleteItem(id);
     onClose();
   };
 
@@ -98,7 +94,15 @@ function CartModal({item, onClose, pathname}) {
       </div>
       <div className='flex flex-initial h-[25%] flex-row p-2 justify-end'>
         { pathname === 'Cart' && quantity === '0' ?
-          <button className="link" onClick={deleteCartItem}>Delete Item</button>:
+          <button 
+            className="link" 
+            onClick={(e) => {
+              handleDelete(e, id)
+              onClose();
+            }}
+          >
+            Delete Item
+          </button>:
           <></>
         }
 

@@ -1,4 +1,4 @@
-const restaurantsData = [
+const resData = [
   {
     id: 1,
     title: 'The Red Pickle',
@@ -55,4 +55,4 @@ const restaurantsData = [
   },
 ];
 
-export default restaurantsData;
+export default resData;

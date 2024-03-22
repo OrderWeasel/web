@@ -1,12 +1,13 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import NavButton from '../ui/navButton';
+import { MerchantDataProvider } from '../../contexts/MerchantDataContext';
 
 // I would like to gray out the Back to restaurants button if the current page is /restaurants
 
 export default function CustomersLayout({ children }) {
   return (
-    <>
+    <MerchantDataProvider>
       <header className='shadow-lg'>
         <Image src="/order_weasel.jpg"  alt="The order weasel" width={100} height={100}/>
         <Link className="header-link" href="/">
@@ -17,6 +18,6 @@ export default function CustomersLayout({ children }) {
         </nav>
       </header>
       {children}
-    </>
+    </MerchantDataProvider>
   );
 }

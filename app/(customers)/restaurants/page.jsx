@@ -2,11 +2,7 @@
 import React, {useEffect} from 'react';
 import Link from "next/link";
 import Image from "next/image";
-
-
-// temporary ----------------------------
-import restaurantsData from "../../lib/seedData/restaurantsData";
-//------------------------------------
+import useMerchantData from '../../../hooks/useMerchantData';
 
 function RestaurantItem({
   id,
@@ -54,6 +50,7 @@ function RestaurantItem({
 }
 
 export default function Restaurants(){
+  const {loadRestaurants, restaurantsData} = useMerchantData();
   // const {requestNotificationsPermissions, getFCMToken, usePushNotifications} = usePush();
 
   // useEffect(() => {
@@ -70,6 +67,9 @@ export default function Restaurants(){
   // },[]);
 
   // need an api to getRestaurants
+  useEffect(() => {
+    loadRestaurants();
+  }, []);
 
   return (
     <main>
