@@ -150,8 +150,8 @@ function CheckoutButton() {
         pathname: '/restaurants/checkout', 
         query:{
           merchantId: merchantId,
-          cart: cart,
-          totals: totals,
+          cart: JSON.stringify(cart),
+          totals: JSON.stringify(totals),
         }
       }}
     > 
@@ -164,6 +164,9 @@ function CheckoutButton() {
 function CartSection({cart}) {
   const {calculateTaxAndTotals} = useCart();
   const totals = calculateTaxAndTotals(cart);
+  const subtotal = (totals.subtotal).toFixed(2);
+  const tax = (totals.tax).toFixed(2);
+  const total = (totals.total).toFixed(2);
 
   return (
     <section className='cart flex text-center w-[30%]'>
@@ -179,11 +182,11 @@ function CartSection({cart}) {
       </div>
       <div className='flex flex-initial h-[10vh] border-t-2 border-gray-800 m-4 pt-2 grid grid-cols-2 grid-rows-3 gap-4'>
         <h3>Subtotal:</h3>
-        <p className='text-xl'>${(totals.subtotal).toFixed(2)}</p>
+        <p className='text-xl'>${subtotal}</p>
         <h3>Tax:</h3>
-        <p className='text-xl'>${(totals.tax).toFixed(2)}</p>
+        <p className='text-xl'>${tax}</p>
         <h3>Total:</h3>
-        <p className='text-xl'>${(totals.total).toFixed(2)}</p>
+        <p className='text-xl'>${total}</p>
       </div>
       <div className='flex flex-initial h-[8vh] flex-grow-0 border-t-2 border-gray-800 flex-row justify-center m-4 pl-2 pr-2 pt-2'>
         <CheckoutButton />

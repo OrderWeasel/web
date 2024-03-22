@@ -1,26 +1,18 @@
 "use client";
 import React, {useContext} from 'react';
 import { OauthContext } from '../contexts/OauthContext';
-
+import { openLinkInCurrentWindow, openLinkInNewWindow } from '../app/lib/utils/openLink';
 const oauthURL = process.env.NEXT_PUBLIC_HOST_URL + '/api/connect-square/geturl/';
 
 const useOauthAPI = () => {
 	const [merchantID, setMerchantID] = useContext(OauthContext);
 
   async function oauth(authorizationUrl) {
-    // const openLinkInNewWindow = (url) => {
-    //   window.open(url, '_blank');
-    // };
-
-    const openLink = (url) => {
-      window.location.href = url;
-    }
-
 		try {
 			console.log('Fetching oauth at: ' + authorizationUrl);
-      // openLinkInNewWindow(authorizationUrl);
-      openLink(authorizationUrl);
-		} catch (error) {
+      openLinkInNewWindow(authorizationUrl);
+      // openLinkInCurrentWindow(authorizationUrl);
+    } catch (error) {
 			throw new Error(error.message);
 		}
   }
