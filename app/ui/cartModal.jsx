@@ -1,6 +1,5 @@
 "use client";
 import React, {useEffect, useState} from 'react';
-// import { useSearchParams } from 'next/navigation';
 import useCart from '../../hooks/useCart';
 import { GrClose } from "react-icons/gr";
 
@@ -28,6 +27,7 @@ function QuantityInput({quantity, setQuantity}) {
       <input type="text"
         className='bg-white text-black border-2 border-black rounded-xl p-0 w-12 h-12 text-center align-middle' 
         value={quantity}
+        disabled
       />
       <button className="link" onClick={increaseQuantity}>
         +
@@ -37,8 +37,6 @@ function QuantityInput({quantity, setQuantity}) {
 }
 
 function CartModal({item, onClose, pathname}) {
-  // if (!isOpen) return null;
-  // const searchParams = useSearchParams();
   const {addItem, editItem, findIndex, cart, handleDelete} = useCart();
   let itemQuantity = pathname === 'Menu' ? '0' : item.quantity;
   const [quantity, setQuantity] = useState(itemQuantity);
@@ -47,13 +45,6 @@ function CartModal({item, onClose, pathname}) {
   useEffect(() => {
     console.log(quantity);
   }, [quantity]);
-
-  // let merchantId = searchParams.get('merchantId');
-
-  // let id = item.id;
-  // let name = item.name;
-  // let cost = item.cost;
-  // let desc = item.description;
 
   let updateCart = () => {
     if (findIndex(cart, id) === -1) {

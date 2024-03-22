@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities*/
 "use client";
-import React, {useState, useContext, createContext} from 'react';
+import React, {useState, useContext, createContext, useEffect} from 'react';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -168,11 +168,7 @@ function CheckoutTotals({totals}) {
   let tax = totals.tax;
   let total = totals.total;
 
-  console.log(JSON.stringify({subtotal, tax, total}) + " (at CheckoutTotals)");
-
-  {/* <p>${subtotal.toFixed(2)}</p>
-  <p>${tax.toFixed(2)}</p>
-  <p>${total.toFixed(2)}</p> */}
+  // console.log(JSON.stringify({subtotal, tax, total}) + " (at CheckoutTotals)");
 
   return (
     <section className='flex-1 mt-4'>
@@ -180,11 +176,11 @@ function CheckoutTotals({totals}) {
       <p className='text-red-500'>*The following totals are estimates based on tax rates in your area</p>
       <div className='p-4 grid grid-cols-2 grid-rows-3 gap-4'>
         <h3>Subtotal:</h3>
-        <p className='text-xl'>$1</p>
+        <p className='text-xl'>${subtotal}</p>
         <h3>Tax:</h3>
-        <p className='text-xl'>$2</p>
+        <p className='text-xl'>${tax}</p>
         <h3>Total:</h3>
-        <p className='text-xl'>$3</p>
+        <p className='text-xl'>${total}</p>
       </div>
     </section>
   );

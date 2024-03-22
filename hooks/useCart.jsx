@@ -45,7 +45,7 @@ const useCart = () => {
     });
 
 
-    debugger; // start here
+    // debugger; // start here
     updateCart(merchantId, cartCopy);
     setCart(cartCopy);
   }
@@ -65,6 +65,8 @@ const useCart = () => {
 
     setCart(cartCopy);
   }
+
+  // helpers
 
   function cartTotal() {
     let total = 0;
@@ -96,8 +98,6 @@ const useCart = () => {
   
     return {subtotal, tax, total};
   };
-
-  // helpers
 
   function findIndex(arr, id) {
     return arr.findIndex(item => item.id === id);

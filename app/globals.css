@@ -253,6 +253,10 @@ dialog.visible {
   align-items: center;
 }
 
+.cart {
+  max-height: calc(100vh - 10rem);
+}
+
 .panel {
   overflow-y: auto;
   padding-left: 1rem;
@@ -360,7 +364,7 @@ form {
   }
 
   ::-webkit-scrollbar {
-    background-color: rgb(73, 73, 73);
+    background-color:  rgb(27, 27, 43);
   }
 
   ::-webkit-scrollbar-thumb {

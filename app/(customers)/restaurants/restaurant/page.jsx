@@ -98,13 +98,12 @@ function MenuSection() {
 function CartItem({item}) {
   const {openModalId, isVisible, handleItemClick} = useModal();
   const {handleDelete} = useCart();
-  // const {merchantId} = useMerchantData();
   let {id, name, cost, quantity} = item;
 
   return (
     <li
       onClick={() =>{handleItemClick(item)}}
-      className='flex flex-row hover:cursor-pointer mb-2 justify-between ml-[10%] mr-[10%] border-t-2 border-gray-800 pl-2 pr-2'
+      className='flex items-center flex-row hover:cursor-pointer justify-between border-t-2 border-gray-800 hover:bg-gray-800 lg:h-10 sm:h-16 ml-8 mr-8 pl-2 pr-2'
     >
     {isVisible && openModalId === id && (
       <Modal>
@@ -130,9 +129,9 @@ function CartItem({item}) {
       <p className='flex-initial w-[20%] text-left'>${(cost * quantity).toFixed(2)}</p>
       <figure
         onClick={(e) => {handleDelete(e, id)}}
-        className='flex flex-1 self-center justify-center'
+        className='flex flex-1 justify-center'
       >
-        <FaTrash className='text-white hover:text-red-500' />
+        <FaTrash className='text-white hover:text-red-500 self-center' />
       </figure>
     </li>
   );
@@ -143,10 +142,10 @@ function CheckoutButton() {
   let merchantId = searchParams.get('merchantId');
 
   const {calculateTaxAndTotals, cart} = useCart();
-  const totals = calculateTaxAndTotals(cart)
+  const totals = calculateTaxAndTotals(cart);
  
   return (
-    <Link className="link flex flex-1 items-center  justify-between"
+    <Link className="link flex flex-1 items-center justify-between self-center"
       href={{
         pathname: '/restaurants/checkout', 
         query:{
@@ -163,12 +162,14 @@ function CheckoutButton() {
 }
 
 function CartSection({cart}) {
+  const {calculateTaxAndTotals} = useCart();
+  const totals = calculateTaxAndTotals(cart);
+
   return (
-    <section className='flex text-center w-[30%]'>
-    <h3 className='flex-initial h-[12%] flex-grow-0 mt-8'>{cart.length === 0 ? 'Your Cart is Empty' : 'Your Items'}</h3>
-    <div className='flex flex-1 flex-grow'>
-      <div className='flex-1 w-[90%] overflow-y-auto items-left items-left'>
-        <ol>
+    <section className='cart flex text-center w-[30%]'>
+      <h3 className='flex-initial h-[6vh] flex-grow-0 mt-8'>{cart.length === 0 ? 'Your Cart is Empty' : 'Your Items'}</h3>
+      <div className='flex-initial h-[40vh]'>
+        <ol className='overflow-auto h-[40vh]'>
           {cart.map((item, index) => {
           return (
             <CartItem item={item} key={index}/>
@@ -176,10 +177,17 @@ function CartSection({cart}) {
           })}  
         </ol>
       </div>
-    </div>
-    <div className='flex flex-initial h-[12%] flex-grow-0 border-t-2 border-indigo-500 flex-row justify-center m-4 pl-2 pr-2 pt-2'>
-      <CheckoutButton />
-    </div>
+      <div className='flex flex-initial h-[10vh] border-t-2 border-gray-800 m-4 pt-2 grid grid-cols-2 grid-rows-3 gap-4'>
+        <h3>Subtotal:</h3>
+        <p className='text-xl'>${(totals.subtotal).toFixed(2)}</p>
+        <h3>Tax:</h3>
+        <p className='text-xl'>${(totals.tax).toFixed(2)}</p>
+        <h3>Total:</h3>
+        <p className='text-xl'>${(totals.total).toFixed(2)}</p>
+      </div>
+      <div className='flex flex-initial h-[8vh] flex-grow-0 border-t-2 border-gray-800 flex-row justify-center m-4 pl-2 pr-2 pt-2'>
+        <CheckoutButton />
+      </div>
     </section>
   );
 }
