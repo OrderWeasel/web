@@ -2,32 +2,49 @@
 import React, {useState, useEffect} from 'react';
 
 import useOrders from '../../../hooks/useOrders';
+import useModal from '../../../hooks/useModal';
+import Modal from '../../ui/modal';
 import OrderItemModal from '../../ui/orderItemModal'
 
 function OrderItem({item}) {
-  const [modalVisible, setModalVisible] = useState(false);
+  const { openModalId, isVisible, handleItemClick} = useModal();
+
   let id = item.id;
   let orderId = item.order_id;
   let fullName = item.full_name;
   let customerPhone = item.phone;
   let timestamp = item.timestamp;
-
-  let handleClick = () => {
-    setModalVisible(!modalVisible);
-  }
-
   return (
-    <div className="flex-initial h-30 bg-black p-2 mb-2 rounded" onClick={handleClick}>
-      <OrderItemModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        item={item}
-    />
-      <p>OrderID: {orderId}</p>
-      <p>Name: {fullName}</p>
-      <p>Phone: {customerPhone}</p>
-      <p>Timestamp: {timestamp}</p>
-    </div>
+    <li 
+      className="flex-initial h-30 bg-black p-2 mb-2 rounded hover:cursor-pointer hover:border-solid hover:border-blue-500 hover:border-2 hover:h-28" 
+      onClick={() => {handleItemClick(item)}}
+    >
+    {isVisible && openModalId === item.id && (
+      <Modal>
+        <div 
+          className='modal'
+          id='modal-backdrop' 
+          onClick={(e) => {
+            e.stopPropagation();
+            if (e.target.id === 'modal-backdrop') {
+              handleItemClick(item);
+            }
+          }}
+        >
+          <OrderItemModal
+            item={item}
+            onClose={() => {handleItemClick(item.id)}}
+          />
+        </div>
+      </Modal>
+    )}
+      <div>
+        <p>OrderID: {orderId}</p>
+        <p>Name: {fullName}</p>
+        <p>Phone: {customerPhone}</p>
+        <p>Timestamp: {timestamp}</p>
+      </div>
+    </li>
   );
 }
 
@@ -37,11 +54,13 @@ function NewOrdersPanel() {
   return (
     <div className='panel flex flex-1 flex-col overflow-y-auto'>
       <h3>New Orders</h3>
-      {orders.new.map((item, index) => {
-        return (
-          <OrderItem item={item} key={index}/>
-        );
-      })}
+        <ul>
+          {orders.new.map((item, index) => {
+            return (
+              <OrderItem item={item} key={index}/>
+            );
+          })}
+        </ul>
     </div>
   );
 }
@@ -52,11 +71,13 @@ function OpenOrdersPanel() {
   return (
     <div className='panel flex flex-1 flex-col overflow-y-auto'>
       <h3>Open Orders</h3>
-      {orders.open.map((item, index) => {
-        return (
-          <OrderItem item={item} key={index}/>
-        );
-      })}
+      <ul>
+        {orders.open.map((item, index) => {
+          return (
+            <OrderItem item={item} key={index}/>
+          );
+        })}
+      </ul>
     </div>
   );
 }
@@ -67,11 +88,13 @@ function CompleteOrdersPanel() {
   return (
     <div className='panel flex flex-1 flex-col overflow-y-auto'>
       <h3>Complete Orders</h3>
-      {orders.complete.map((item, index) => {
-        return (
-          <OrderItem item={item} key={index}/>
-        );
-      })}
+      <ul>
+        {orders.complete.map((item, index) => {
+          return (
+            <OrderItem item={item} key={index}/>
+          );
+        })}
+      </ul>
     </div>
   );
 }
@@ -86,9 +109,10 @@ function Status() {
 }
 
 export default function Orders(){
-  const {getOrders, takingOrders} = useOrders();
+  const {getOrders, takingOrders, setTakingOrders} = useOrders();
 
   useEffect(() => {
+    setTakingOrders(false);
     getOrders();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -104,6 +128,7 @@ export default function Orders(){
             <div className='inactive-overlay'></div>
           )}
         </section>
+        <div id="modal-root"></div>
     </main>
   );
 }

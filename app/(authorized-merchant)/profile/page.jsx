@@ -1,5 +1,5 @@
 "use client";
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 // import useLocalStorage from '../../../hooks/useLocalStorage';
@@ -40,11 +40,9 @@ let resetFields = () => {
 }
 
 function StoreInformation() {
-  // const router = useRouter();
   // const {getAuthorizedMerchant} = useLocalStorage();
   const {currentMerchant, setCurrentMerchant} = useLoginAPI();
   const { 
-    // resetFields, 
     fillStoreInfo,
     updateStoreInfo,
     handleProfileUpdate,
@@ -251,11 +249,9 @@ function StoreInformation() {
 }
 
 function LoginInformation() {
-  const router = useRouter();
   const {currentMerchant, setCurrentMerchant} = useLoginAPI();
   const {
     email,
-    // merchants, 
     updateEmail,
     fillLoginInfo, 
     handleLoginUpdate,
@@ -266,7 +262,6 @@ function LoginInformation() {
     setValidEmail, 
     handleEmailInput,
     handleInvalidSubmission,
-    // isValidLoginInformation, 
   } = useSignUpAPI(); 
 
   useEffect(() => {
@@ -365,17 +360,18 @@ function LoginInformation() {
 }
 
 function DeleteAccount() {
-  const {currentMerchant, toggleLogout} = useLoginAPI();
-  const {deleteMerchant} = useMerchantAPI();
+  const {currentMerchant, logout} = useLoginAPI();
+  const {deleteMerchant, removeMerchant} = useMerchantAPI();
   const router = useRouter();
 
   let handleDelete = async (e, href) => {
     e.preventDefault();
     try {
       let success = await deleteMerchant(currentMerchant.id);
-      toggleLogout();
-      alert(success.message);
-      router.push(href);
+      removeMerchant(currentMerchant.id);
+      logout(currentMerchant.id);
+      alert(success);
+      router.push(e.target.href);
     } catch (e) {
       alert(e.message);
     }

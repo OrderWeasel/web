@@ -4,6 +4,8 @@ import {createContext, useState, useEffect} from 'react';
 
 const SignUpContext = createContext(null);
 
+
+
 const SignUpProvider = props => {
   const [validName, setValidName] = useState(false);
   const [validPhone, setValidPhone] = useState(false);
@@ -17,6 +19,18 @@ const SignUpProvider = props => {
   const [validPassword, setValidPassword] = useState(false);
   const [validValidator, setValidValidator] = useState(false);
 
+  function resetState() {
+    setValidName(false);
+    setValidPhone(false);
+    setValidStreet(false);
+    setValidCity(false);
+    setValidZip(false);
+    setValidState(false);
+    setValidEmail(false);
+    setValidPassword(false);
+    setValidValidator(false);
+  }
+
   let defaultNewMerchant = {
     restaurantName: '',
     phone: '',
@@ -29,21 +43,6 @@ const SignUpProvider = props => {
     validator: '',
     estimatedMinutesForPickup: 30,
   }
-
-    // // temporary
-    // defaultNewMerchant  = {
-    //   "restaurantName": "Red Table",
-    //   "phone": "1234567890",
-    //   "street": "5555 Elm street",
-    //   "city": "Trinidad",
-    //   "state": "CO",
-    //   "zip": "80808",
-    //   "email": "fwklausmeier@gmail.com",
-    //   "password": "K!aus719",
-    //   "validator": "K!aus719",
-    //   "estimatedMinutesForPickup": "30",
-    // };
-    //   //-----------
 
   const [newMerchant, setNewMerchant] = useState(defaultNewMerchant);
 
@@ -63,7 +62,7 @@ const SignUpProvider = props => {
         validStreet, setValidStreet, validCity, setValidCity,
         validZip, setValidZip, validState, setValidState,
         validEmail, setValidEmail, validPassword, setValidPassword,
-        validValidator, setValidValidator, defaultNewMerchant
+        validValidator, setValidValidator, defaultNewMerchant, resetState
       }}
     >
       {props.children}

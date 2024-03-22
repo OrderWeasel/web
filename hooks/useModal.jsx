@@ -1,7 +1,7 @@
 "use client";
 import React, {useContext} from 'react';
 import { ModalContext } from '../contexts/ModalContext';
-import getCopy from '../app/lib/utils/getCopy';
+// import getCopy from '../app/lib/utils/getCopy';
 
 const useModal = () => {
   const {openModalId, setOpenModalId, isVisible, setIsVisible} = useContext(ModalContext);

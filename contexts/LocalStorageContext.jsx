@@ -14,7 +14,7 @@ const LocalStorageProvider = props => {
   }, [cookies]);
 
   useEffect(() => {
-    console.log(JSON.stringify(authMerchant) + " (authorizedMerchant at LocalStorageProvider)");
+    // console.log(JSON.stringify(authMerchant) + " (authorizedMerchant at LocalStorageProvider)");
   });
 
   return (

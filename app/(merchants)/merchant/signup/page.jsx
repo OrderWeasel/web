@@ -1,4 +1,5 @@
 "use client";
+import React, {useEffect} from "react";
 import useSignUpAPI from "../../../../hooks/useSignUpAPI";
 import {STATES} from "../../../lib/utils/statesList";
 import Link from "next/link";
@@ -29,7 +30,6 @@ import {
   InvalidPasswordMessage,
   InvalidValidatorMessage,
 } from '../../../ui/validationMessages';
-import { useEffect } from "react";
 
 function ValidationMessages() {
   const {
@@ -270,6 +270,10 @@ export default function SignUp(){
   const router = useRouter();
   let merchant;
 
+  useEffect(() => {
+    resetSignUpState();
+  }, []);
+
   let handleSucessfulSubmission = async (e) => {
     e.preventDefault();
     let newMerchantMessage = `Welcome ${newMerchant.email}`;
@@ -278,7 +282,6 @@ export default function SignUp(){
       merchant = await signUp();
       setCurrentMerchant(merchant);
       toggleLogin();
-      
       alert(newMerchantMessage); // replace with flash message
       router.push(e.target.href);
       resetSignUpState();

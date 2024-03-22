@@ -14,7 +14,7 @@ const useSignUpAPI = () => {
     validStreet, setValidStreet, validCity, setValidCity,
     validZip, setValidZip, validState, setValidState,
     validEmail, setValidEmail, validPassword, setValidPassword,
-    validValidator, setValidValidator, defaultNewMerchant
+    validValidator, setValidValidator, defaultNewMerchant, resetState
   } = useContext(SignUpContext);
 
   // API methods
@@ -123,15 +123,7 @@ const useSignUpAPI = () => {
 
   function resetSignUpState() {
     setNewMerchant(defaultNewMerchant);
-    setValidName(false);
-    setValidPhone(false);
-    setValidStreet(false);
-    setValidCity(false);
-    setValidZip(false);
-    setValidState(false);
-    setValidEmail(false);
-    setValidPassword(false);
-    setValidValidator(false);
+    resetState();
   }
 
   function updateNewMerchant(field, input) {

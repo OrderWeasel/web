@@ -95,7 +95,7 @@ const useLoginAPI = () => {
     try {
       let response = await logoutAPI(merchantId);
 
-      // reset cookie as well
+      // reset cookie as well // not necessary at this time
       setCurrentMerchant(defaultMerchant);
       toggleLogout();
       return response;

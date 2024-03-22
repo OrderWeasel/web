@@ -10,6 +10,7 @@ import { MerchantProvider } from '../contexts/MerchantContext';
 import { LocalStorageProvider } from '../contexts/LocalStorageContext';
 import { OrdersProvider } from '../contexts/OrdersContext';
 import { OauthProvider } from '../contexts/OauthContext';
+import { ModalProvider } from "../contexts/ModalContext";
 
 export default function RootLayout({ children }) {
   return (
@@ -20,6 +21,7 @@ export default function RootLayout({ children }) {
             <OrdersProvider>
               <LoginProvider>
                 <SignUpProvider>
+                  <ModalProvider>
                     <html lang="en">
                       <body className={koulen.className}>
                         {children}
@@ -31,6 +33,7 @@ export default function RootLayout({ children }) {
                         </footer>
                       </body>
                     </html>
+                  </ModalProvider>
                 </SignUpProvider>
               </LoginProvider>
             </OrdersProvider>

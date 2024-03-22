@@ -104,11 +104,11 @@ const useOrders = () => {
   }
 
   return {
-    takingOrders,
-    setTakingOrders,
     orders,
     getOrders,
     createOrder,
+    takingOrders,
+    setTakingOrders,
     updateOrderStatus,
   };
 };

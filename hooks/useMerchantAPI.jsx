@@ -2,7 +2,6 @@
 import {useContext} from 'react';
 import {MerchantContext} from '../contexts/MerchantContext';
 import useSessions from './useSession';
-// import getCopy from '../app/lib/utils/getCopy';
 
 const merchantsURL = process.env.NEXT_PUBLIC_HOST_URL + '/api/merchants/';
 
@@ -111,7 +110,6 @@ const useMerchantAPI = () => {
   }
 
   async function deleteMerchant(id) {
-    removeMerchant(id);
     // let sessionID = encodeSessionId();
     // let cookie = `connect.sid=${sessionID}`;
     let requestObj = {
@@ -123,11 +121,12 @@ const useMerchantAPI = () => {
         'Content-Type': 'application/json',
       },
     };
-
+    
     // delete the merchant on the server
     try {
       let res = await fetch(merchantsURL + id, requestObj);
       let json = await res.json();
+      
       if (res.status === 400) {
         throw new Error(json.error);
       }
@@ -287,6 +286,7 @@ const useMerchantAPI = () => {
     getMerchants,
     fillStoreInfo,
     fillLoginInfo,
+    removeMerchant,
     addNewMerchant,
     updateMerchant,
     deleteMerchant,

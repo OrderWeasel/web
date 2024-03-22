@@ -8,11 +8,11 @@ const ModalProvider = props => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    console.log(openModalId + " (at ModalContext)");
+    // console.log(openModalId + " (at ModalContext)");
   }, [openModalId]);
 
   useEffect(() => {
-    console.log(isVisible + " (at ModalContext)")
+    // console.log(isVisible + " (at ModalContext)")
   }, [isVisible]);
 
   return (
